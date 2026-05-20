@@ -195,7 +195,7 @@ def generate_groq_joke(key_manager, model_name, headline):
 
 
 def generate_openai_joke(model_name, headline):
-    """Generate a joke via OpenAI API (via CMU AI Gateway)."""
+    """Generate a joke via an OpenAI-compatible API."""
     api_key = os.getenv("OPENAI_API_KEY")
     base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
     

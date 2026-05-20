@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+
+# ML artifacts
+wandb/
+models/
+*.pt
+*.bin
+*.safetensors
+/local/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Logs and caches
+*.log
+token_usage.json
+results/training_plots/
+results/alignment_data/
+results/benchmark_*.json
+results/humor_rank/

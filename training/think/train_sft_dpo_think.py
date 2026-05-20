@@ -50,8 +50,6 @@ DPO_TRAIN_FILE = f"{BASE_DIR}/training/think/data/dpo_think.jsonl"
 SFT_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_SFT_Think_7B"
 DPO_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_DPO_Think_7B"
 
-WANDB_PROJECT = "humorgen-think"
-
 MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct"
 MAX_SEQ_LENGTH = 1024
 DTYPE = None
@@ -176,7 +174,7 @@ def train_sft():
         lr_scheduler_type="linear",
         seed=42,
         output_dir=SFT_OUTPUT_DIR,
-        report_to="wandb",
+        report_to="none",
         run_name="sft-think-r16-lr2e4-b8",
         eval_strategy="steps",
         eval_steps=100,
@@ -263,7 +261,7 @@ def train_dpo():
         seed=42,
         output_dir=DPO_OUTPUT_DIR,
         beta=0.1,
-        report_to="wandb",
+        report_to="none",
         run_name="dpo-think-sym-r16-lr5e7-b0.1",
         eval_strategy="steps",
         eval_steps=50,
@@ -314,8 +312,6 @@ if __name__ == "__main__":
     print("Cognitive Synergy Distillation")
     print(f"Stage: {args.stage.upper()}")
     print("=" * 60)
-    
-    os.environ["WANDB_PROJECT"] = WANDB_PROJECT
     
     if args.stage in ("sft", "all"):
         if not os.path.exists(SFT_OUTPUT_DIR):

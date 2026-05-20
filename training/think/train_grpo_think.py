@@ -49,8 +49,6 @@ SFT_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_SFT_Think_7B"
 GRPO_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_GRPO_Think_7B"
 GRPO_TRAIN_FILE = f"{BASE_DIR}/training/think/data/grpo_think.jsonl"
 
-WANDB_PROJECT = "humorgen-think"
-
 MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct"
 MAX_SEQ_LENGTH = 1024
 
@@ -185,8 +183,6 @@ def train_grpo():
     print("=" * 60)
     print(f"Base Model: {SFT_OUTPUT_DIR}")
     
-    os.environ["WANDB_PROJECT"] = WANDB_PROJECT
-    
     tokenizer = AutoTokenizer.from_pretrained(SFT_OUTPUT_DIR)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -240,7 +236,7 @@ def train_grpo():
         greater_is_better=False,
         save_total_limit=2,
         remove_unused_columns=False,
-        report_to="wandb",
+        report_to="none",
         run_name="grpo-think-hf-r16-lr1e6-t1.0",
     )
     

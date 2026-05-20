@@ -21,7 +21,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Load environment variables (WANDB_API_KEY)
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -47,9 +46,6 @@ BASE_DIR = str(_REPO_ROOT)
 SFT_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_SFT_7B"
 GRPO_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_GRPO_7B"
 GRPO_TRAIN_FILE = f"{BASE_DIR}/results/alignment_data/grpo_train_v4.jsonl"
-
-# W&B
-WANDB_PROJECT = "humorgen"
 
 MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct" 
 MAX_SEQ_LENGTH = 1024
@@ -200,9 +196,6 @@ def train_grpo():
     print("=" * 60)
     print(f"Base Model: {SFT_OUTPUT_DIR}")
     
-    # Initialize W&B
-    os.environ["WANDB_PROJECT"] = WANDB_PROJECT
-    
     # 1. Load Tokenizer
     tokenizer = AutoTokenizer.from_pretrained(SFT_OUTPUT_DIR)
     if tokenizer.pad_token is None:
@@ -263,7 +256,7 @@ def train_grpo():
         greater_is_better=False,
         save_total_limit=2,
         remove_unused_columns=False,   # CRITICAL: Keep 'advantage' column
-        report_to="wandb",
+        report_to="none",
         run_name="grpo-hf-r16-lr1e6-t1.0",
     )
     

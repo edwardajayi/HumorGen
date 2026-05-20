@@ -1,0 +1,401 @@
+id	domain	prompt
+HTB_A_001	Fun Facts	Apples float in water because they are 25 percent air.
+HTB_A_002	Fun Facts	Venus is the only planet that spins clockwise.
+HTB_A_003	Fun Facts	The unicorn is the national animal of Scotland.
+HTB_A_004	Fun Facts	The inventor of the frisbee was turned into a frisbee.
+HTB_A_005	Fun Facts	Wombat poop is cube-shaped.
+HTB_A_006	Fun Facts	Fingernails grow faster than toenails.
+HTB_A_007	Fun Facts	Peanuts aren't technically nuts.
+HTB_A_008	Fun Facts	Japanese macaques make snowballs for fun.
+HTB_A_009	Fun Facts	The letter Q doesn't appear in any US state name.
+HTB_A_010	Fun Facts	Penguins propose to their mates with a pebble.
+HTB_A_011	Fun Facts	It is physically impossible for pigs to look up into the sky.
+HTB_A_012	Fun Facts	An ostrich's eye is bigger than its brain.
+HTB_A_013	Fun Facts	Cows have best friends.
+HTB_A_014	Fun Facts	Octopuses have three hearts.
+HTB_A_015	Fun Facts	Movie trailers originally played after the movie.
+HTB_A_016	Fun Facts	Blood donors in Sweden receive a text when their blood is used.
+HTB_A_017	Fun Facts	Some cats are allergic to humans.
+HTB_A_018	Fun Facts	A chef's toque contains 100 folds.
+HTB_A_019	Fun Facts	The original name for the search engine Google was Backrub.
+HTB_A_020	Fun Facts	Bananas are technically berries.
+HTB_A_021	Fun Facts	Dead people can get goosebumps.
+HTB_A_022	Fun Facts	Tigers have striped skin, not just striped fur.
+HTB_A_023	Fun Facts	Snails can sleep for three years.
+HTB_A_024	Fun Facts	More people are allergic to cow's milk than any other food.
+HTB_A_025	Fun Facts	Nutmeg is extremely poisonous if injected intravenously.
+HTB_A_026	Fun Facts	A crocodile cannot stick its tongue out.
+HTB_A_027	Fun Facts	The shortest commercial flight in the world lasts 57 seconds.
+HTB_A_028	Fun Facts	Rabbits cannot vomit.
+HTB_A_029	Fun Facts	Humans share 50 percent of their DNA with bananas.
+HTB_A_030	Fun Facts	The world's oldest wooden wheel has been around for more than 5,000 years.
+HTB_A_031	Fun Facts	A sneeze travels about 100 miles per hour.
+HTB_A_032	Fun Facts	Cotton candy was invented by a dentist.
+HTB_A_033	Fun Facts	A shrimp's heart is in its head.
+HTB_A_034	Fun Facts	The human body contains enough carbon to make 9,000 pencils.
+HTB_A_035	Fun Facts	A flock of crows is called a murder.
+HTB_A_036	Fun Facts	Chewing gum burns about 11 calories per hour.
+HTB_A_037	Fun Facts	The average person spends six months of their lifetime waiting for red lights to turn green.
+HTB_A_038	Fun Facts	Honey never spoils.
+HTB_A_039	Fun Facts	Armadillo shells are bulletproof.
+HTB_A_040	Fun Facts	The longest English word without a vowel is rhythm.
+HTB_A_041	Fun Facts	A day on Venus is longer than a year on Venus.
+HTB_A_042	Fun Facts	Koalas sleep up to 22 hours a day.
+HTB_A_043	Fun Facts	Bananas grow pointing upwards.
+HTB_A_044	Fun Facts	A jiffy is an actual unit of time.
+HTB_A_045	Fun Facts	Butterflies taste with their feet.
+HTB_A_046	Fun Facts	Sloths can hold their breath longer than dolphins.
+HTB_A_047	Fun Facts	A group of flamingos is called a flamboyance.
+HTB_A_048	Fun Facts	Water expands when it freezes.
+HTB_A_049	Fun Facts	The Eiffel Tower can be 15 cm taller during the summer.
+HTB_A_050	Fun Facts	A completely blind chameleon still takes on the colors of its environment.
+HTB_B_001	Daily Life	My houseplant is judging my life choices.
+HTB_B_002	Daily Life	I tried a new recipe and now the kitchen is a disaster zone.
+HTB_B_003	Daily Life	I am currently trapped under a sleeping cat.
+HTB_B_004	Daily Life	I am engaged in a cold war with my thermostat.
+HTB_B_005	Daily Life	I have a drawer full of cables that belong to devices from 2008.
+HTB_B_006	Daily Life	I am convinced my washing machine eats socks.
+HTB_B_007	Daily Life	I just apologized to a mannequin.
+HTB_B_008	Daily Life	I put my keys in the fridge.
+HTB_B_009	Daily Life	I spend more time picking a movie than watching one.
+HTB_B_010	Daily Life	My printer hates me.
+HTB_B_011	Daily Life	I answered 'you too' when the waiter told me to enjoy my meal.
+HTB_B_012	Daily Life	I hit 'reply all' when I definitely shouldn't have.
+HTB_B_013	Daily Life	I buy books faster than I can read them.
+HTB_B_014	Daily Life	I pretend to text when I'm walking awkwardly.
+HTB_B_015	Daily Life	I sing in the shower like I'm performing at Madison Square Garden.
+HTB_B_016	Daily Life	I laughed at a joke I didn't understand to be polite.
+HTB_B_017	Daily Life	I open the fridge, lower my standards, and close it again.
+HTB_B_018	Daily Life	I talk to my pets in a voice I would never use with humans.
+HTB_B_019	Daily Life	I have a designated 'junk drawer' that contains my entire life.
+HTB_B_020	Daily Life	I spent twenty minutes looking for the phone I was holding.
+HTB_B_021	Daily Life	I hold my breath when walking past someone smoking.
+HTB_B_022	Daily Life	I have 500 emails in my inbox and respond to none of them.
+HTB_B_023	Daily Life	I bought vegetables with the best intentions.
+HTB_B_024	Daily Life	I have thirty tabs open and no idea where the music is coming from.
+HTB_B_025	Daily Life	I just tripped on flat ground.
+HTB_B_026	Daily Life	My alarm clock is just a suggestion.
+HTB_B_027	Daily Life	I turn down the radio when I'm looking for an address.
+HTB_B_028	Daily Life	I accidentally liked an old photo while stalking someone's profile.
+HTB_B_029	Daily Life	My dog thinks the delivery driver is an assassin.
+HTB_B_030	Daily Life	I have a designated chair for clothes that aren't quite clean but aren't dirty.
+HTB_B_031	Daily Life	I just remembered an embarrassing thing I did five years ago and now I can't sleep.
+HTB_B_032	Daily Life	I practice arguments in the shower.
+HTB_B_033	Daily Life	I rely on auto-correct more than my own brain.
+HTB_B_034	Daily Life	I start a diet every Monday morning and end it by Monday afternoon.
+HTB_B_035	Daily Life	I have a love-hate relationship with my snooze button.
+HTB_B_036	Daily Life	I checked my watch and immediately forgot the time.
+HTB_B_037	Daily Life	My car's check engine light has become part of the dashboard aesthetic.
+HTB_B_038	Daily Life	My WiFi only disconnects when I'm speaking on a video call.
+HTB_B_039	Daily Life	I carefully packed an umbrella and then left it on the train.
+HTB_B_040	Daily Life	I clicked 'remind me tomorrow' on a software update for the 400th day in a row.
+HTB_B_041	Daily Life	I am a hostage to my phone's battery percentage.
+HTB_B_042	Daily Life	I get irrationally angry when my headphones get snagged on a doorknob.
+HTB_B_043	Daily Life	I pushed a door that clearly said pull.
+HTB_B_044	Daily Life	I tried to assemble IKEA furniture without the manual.
+HTB_B_045	Daily Life	I have a playlist for a mood I've never experienced.
+HTB_B_046	Daily Life	I silently judge people's grammar on the internet.
+HTB_B_047	Daily Life	I waved back at someone who was waving at the person behind me.
+HTB_B_048	Daily Life	I always pick the shopping cart with the squeaky wheel.
+HTB_B_049	Daily Life	I walked into a room and forgot why I went in there.
+HTB_B_050	Daily Life	I bought a gym membership to use their showers.
+HTB_C_001	Social Terms	Generational amnesia.
+HTB_C_002	Social Terms	Artificial stupidity.
+HTB_C_003	Social Terms	Retroactive continuity.
+HTB_C_004	Social Terms	Digital hoarding.
+HTB_C_005	Social Terms	Imposter syndrome.
+HTB_C_006	Social Terms	Institutional memory loss.
+HTB_C_007	Social Terms	Confirmation bias.
+HTB_C_008	Social Terms	Performative authenticity.
+HTB_C_009	Social Terms	Weaponized incompetence.
+HTB_C_010	Social Terms	Strategic vulnerability.
+HTB_C_011	Social Terms	Emotional outsourcing.
+HTB_C_012	Social Terms	Virtual reality.
+HTB_C_013	Social Terms	Girlboss.
+HTB_C_014	Social Terms	Manufactured serendipity.
+HTB_C_015	Social Terms	Mandatory fun.
+HTB_C_016	Social Terms	Intellectual fast food.
+HTB_C_017	Social Terms	Synthetic nature.
+HTB_C_018	Social Terms	Vindictive politeness.
+HTB_C_019	Social Terms	Cognitive dissonance.
+HTB_C_020	Social Terms	Suburban camouflage.
+HTB_C_021	Social Terms	Recreational outrage.
+HTB_C_022	Social Terms	Tone policing.
+HTB_C_023	Social Terms	Great resignation.
+HTB_C_024	Social Terms	Competitive grieving.
+HTB_C_025	Social Terms	Gaslighting.
+HTB_C_026	Social Terms	Casual nihilism.
+HTB_C_027	Social Terms	Corporate spirituality.
+HTB_C_028	Social Terms	Aesthetic starvation.
+HTB_C_029	Social Terms	Micro-aggressions.
+HTB_C_030	Social Terms	Quiet quitting.
+HTB_C_031	Social Terms	Gatekeeping.
+HTB_C_032	Social Terms	Filter bubble.
+HTB_C_033	Social Terms	Surveillance capitalism.
+HTB_C_034	Social Terms	Tactical napping.
+HTB_C_035	Social Terms	Cancel culture.
+HTB_C_036	Social Terms	Bureaucratic nostalgia.
+HTB_C_037	Social Terms	Hustle culture.
+HTB_C_038	Social Terms	Burnout.
+HTB_C_039	Social Terms	Virtue signaling.
+HTB_C_040	Social Terms	Attention economy.
+HTB_C_041	Social Terms	Gig economy.
+HTB_C_042	Social Terms	Aggressive relaxation.
+HTB_C_043	Social Terms	Chronological snobbery.
+HTB_C_044	Social Terms	Existential dread.
+HTB_C_045	Social Terms	Toxic positivity.
+HTB_C_046	Social Terms	Artisanal depression.
+HTB_C_047	Social Terms	Optimistic pessimism.
+HTB_C_048	Social Terms	Mansplaining.
+HTB_C_049	Social Terms	Echo chamber.
+HTB_C_050	Social Terms	Macro-aggressions.
+HTB_D_001	Object Voices	My calendar shrieked: You have no free time!
+HTB_D_002	Object Voices	The sunglasses shaded: Too bright.
+HTB_D_003	Object Voices	The tape dispenser screeched: I'm stuck.
+HTB_D_004	Object Voices	The shower head cried: I'm dripping wet.
+HTB_D_005	Object Voices	The boots stomped: Walk all over me.
+HTB_D_006	Object Voices	The bookmark saved: I'll hold your place.
+HTB_D_007	Object Voices	The fridge said: I'm judging you.
+HTB_D_008	Object Voices	The printer jammed: Paper jam!
+HTB_D_009	Object Voices	The calendar flipped: Another day gone.
+HTB_D_010	Object Voices	The phone vibrated: Pay attention to me.
+HTB_D_011	Object Voices	The ruler measured: You fall short.
+HTB_D_012	Object Voices	The microwave beeped: I'm done with your cold pizza.
+HTB_D_013	Object Voices	The door squeaked: Close me gently.
+HTB_D_014	Object Voices	The keyboard clattered: Type faster.
+HTB_D_015	Object Voices	The battery died: I have no energy left.
+HTB_D_016	Object Voices	The mouse clicked: Select me.
+HTB_D_017	Object Voices	The book opened: Read me.
+HTB_D_018	Object Voices	The hat covered: Protect my head.
+HTB_D_019	Object Voices	The laundry basket groaned: I am overflowing.
+HTB_D_020	Object Voices	The alarm clock mocked: You thought you could sleep?
+HTB_D_021	Object Voices	The glasses focused: I see you clearly.
+HTB_D_022	Object Voices	The sink gurgled: I'm choking on your hair.
+HTB_D_023	Object Voices	The charger begged: Plug me in.
+HTB_D_024	Object Voices	The raincoat shielded: Let it rain.
+HTB_D_025	Object Voices	The light bulb buzzed: I'm having a bright idea.
+HTB_D_026	Object Voices	The oven yelled: It's getting hot in here!
+HTB_D_027	Object Voices	The WiFi router screamed: I need a vacation!
+HTB_D_028	Object Voices	The stapler snapped: I need more staples.
+HTB_D_029	Object Voices	My coffee whispered: You're still going to be tired.
+HTB_D_030	Object Voices	The floorboard creaked: Step carefully.
+HTB_D_031	Object Voices	The window rattled: Let me in.
+HTB_D_032	Object Voices	The eraser rubbed: Let me fix that.
+HTB_D_033	Object Voices	My bed pleaded: Don't leave me.
+HTB_D_034	Object Voices	The laptop overheated: Give me a break.
+HTB_D_035	Object Voices	The toilet demanded: Give me your waste.
+HTB_D_036	Object Voices	The calculator computed: Error.
+HTB_D_037	Object Voices	My bank account laughed: Nice try.
+HTB_D_038	Object Voices	The television judged: Are you still watching?
+HTB_D_039	Object Voices	The GPS commanded: Turn your life around.
+HTB_D_040	Object Voices	The umbrella opened: Keep me dry.
+HTB_D_041	Object Voices	The socks warmed: Keep my feet cozy.
+HTB_D_042	Object Voices	The trash can mumbled: Feed me.
+HTB_D_043	Object Voices	The pencil snapped: I'm broken.
+HTB_D_044	Object Voices	The pen leaked: I'm out of ink.
+HTB_D_045	Object Voices	The scissors snipped: Cut it out.
+HTB_D_046	Object Voices	The clock ticked: Time is running out.
+HTB_D_047	Object Voices	The scarf wrapped: Keep me warm.
+HTB_D_048	Object Voices	The mirror sighed: Is that what we're wearing today?
+HTB_D_049	Object Voices	The ceiling fan whirred: I'm dizzy.
+HTB_D_050	Object Voices	The shoes tied: Don't trip.
+HTB_E_001	Fantasy Creatures	A genie grants a wish for more wishes.
+HTB_E_002	Fantasy Creatures	A troll gets bullied by a bridge inspector.
+HTB_E_003	Fantasy Creatures	A sasquatch tries to buy shoes.
+HTB_E_004	Fantasy Creatures	A bunyip tries to swim in a kiddie pool.
+HTB_E_005	Fantasy Creatures	A griffin tries to order a chicken sandwich.
+HTB_E_006	Fantasy Creatures	A minotaur gets lost in a corn maze.
+HTB_E_007	Fantasy Creatures	A dragon tries to blow out birthday candles.
+HTB_E_008	Fantasy Creatures	A zombie goes on a vegan diet.
+HTB_E_009	Fantasy Creatures	A basilisk tries to have a staring contest.
+HTB_E_010	Fantasy Creatures	A cryptid tries to prove it exists.
+HTB_E_011	Fantasy Creatures	A harpy tries to work as a flight attendant.
+HTB_E_012	Fantasy Creatures	An elf tries to assemble IKEA furniture.
+HTB_E_013	Fantasy Creatures	A fairy gets stuck in a spider web.
+HTB_E_014	Fantasy Creatures	A wendigo tries to go on a diet.
+HTB_E_015	Fantasy Creatures	A mummy tries to unwrap a Christmas present.
+HTB_E_016	Fantasy Creatures	A gorgon tries to get a haircut.
+HTB_E_017	Fantasy Creatures	A snipe tries to go on a scavenger hunt.
+HTB_E_018	Fantasy Creatures	A goblin tries to open a bank account.
+HTB_E_019	Fantasy Creatures	A leprechaun loses his pot of gold in a casino.
+HTB_E_020	Fantasy Creatures	A chimera tries to decide what to eat.
+HTB_E_021	Fantasy Creatures	A superhero forgets their own secret identity.
+HTB_E_022	Fantasy Creatures	A manticore tries to brush its teeth.
+HTB_E_023	Fantasy Creatures	A hoop snake tries to bite its own tail.
+HTB_E_024	Fantasy Creatures	A cyclops tries to wear 3D glasses.
+HTB_E_025	Fantasy Creatures	An alien tries to understand a cricket match.
+HTB_E_026	Fantasy Creatures	A werewolf goes to a dog groomer.
+HTB_E_027	Fantasy Creatures	A grim reaper tries to hail a cab.
+HTB_E_028	Fantasy Creatures	A mothman tries to buy a lamp.
+HTB_E_029	Fantasy Creatures	A pegasus tries to fit in a parking space.
+HTB_E_030	Fantasy Creatures	A hydra tries to wear a turtleneck.
+HTB_E_031	Fantasy Creatures	A kraken tries to play the piano.
+HTB_E_032	Fantasy Creatures	A jersey devil tries to go to a hockey game.
+HTB_E_033	Fantasy Creatures	A skeleton tries to donate blood.
+HTB_E_034	Fantasy Creatures	A drop bear tries to climb a greased pole.
+HTB_E_035	Fantasy Creatures	A mermaid tries to ride a bicycle.
+HTB_E_036	Fantasy Creatures	A fearsome critter tries to act tough.
+HTB_E_037	Fantasy Creatures	A jackalope tries to put on headphones.
+HTB_E_038	Fantasy Creatures	A squonk tries to stop crying.
+HTB_E_039	Fantasy Creatures	A loch ness monster tries to take a selfie.
+HTB_E_040	Fantasy Creatures	A siren tries to sing karaoke.
+HTB_E_041	Fantasy Creatures	A time traveler gets stuck in a DMV line.
+HTB_E_042	Fantasy Creatures	A chupacabra tries to pet a goat.
+HTB_E_043	Fantasy Creatures	A centaur tries to buy pants.
+HTB_E_044	Fantasy Creatures	A ghost gets scared of a vacuum cleaner.
+HTB_E_045	Fantasy Creatures	A wizard forgets the WiFi password.
+HTB_E_046	Fantasy Creatures	A vampire is working in HR.
+HTB_E_047	Fantasy Creatures	A mythical creature tries to get a real job.
+HTB_E_048	Fantasy Creatures	A sphinx forgets the answer to her own riddle.
+HTB_E_049	Fantasy Creatures	A fur-bearing trout tries to go ice fishing.
+HTB_E_050	Fantasy Creatures	A yeti tries to buy sunscreen.
+HTB_F_001	Twisted Definitions	A game is a challenge you can accept.
+HTB_F_002	Twisted Definitions	A movie theater is a place where you pay to sit in the dark.
+HTB_F_003	Twisted Definitions	A scale is a device that tells you how much you weigh.
+HTB_F_004	Twisted Definitions	A poem is a feeling you can read.
+HTB_F_005	Twisted Definitions	A compass is a device that tells you which way is north.
+HTB_F_006	Twisted Definitions	A life is a journey you experience.
+HTB_F_007	Twisted Definitions	A barometer is a device that tells you when it's going to rain.
+HTB_F_008	Twisted Definitions	Meetings are the human equivalent of a loading screen.
+HTB_F_009	Twisted Definitions	My brain is a web browser with 3,000 tabs open.
+HTB_F_010	Twisted Definitions	A smartphone is a device that keeps you connected to people you don't want to talk to.
+HTB_F_011	Twisted Definitions	A painting is a window to the artist's soul.
+HTB_F_012	Twisted Definitions	Coffee is just a socially acceptable form of magic potion.
+HTB_F_013	Twisted Definitions	A bed is a time machine to breakfast.
+HTB_F_014	Twisted Definitions	A house is a box you live in to protect your stuff.
+HTB_F_015	Twisted Definitions	A hobby is an activity you can enjoy.
+HTB_F_016	Twisted Definitions	A car is a machine that turns money into noise.
+HTB_F_017	Twisted Definitions	A restaurant is a place where you pay someone else to cook for you.
+HTB_F_018	Twisted Definitions	A grocery store is a place where you go to buy food you won't eat.
+HTB_F_019	Twisted Definitions	A library is a quiet place where books go to socialize.
+HTB_F_020	Twisted Definitions	A book is a journey you can take without leaving home.
+HTB_F_021	Twisted Definitions	A mirror is a piece of glass that shows you what you look like.
+HTB_F_022	Twisted Definitions	Life is basically a subscription service you didn't read the terms for.
+HTB_F_023	Twisted Definitions	A pillow is a cloud for your head.
+HTB_F_024	Twisted Definitions	A photograph is a memory you can hold.
+HTB_F_025	Twisted Definitions	A school is a place where you go to forget things.
+HTB_F_026	Twisted Definitions	A song is a story you can listen to.
+HTB_F_027	Twisted Definitions	A play is a performance you can see.
+HTB_F_028	Twisted Definitions	A bank is a place that will lend you money if you can prove you don't need it.
+HTB_F_029	Twisted Definitions	A thermometer is a device that tells you how hot you feel.
+HTB_F_030	Twisted Definitions	A watch is a device that tells you how late you are.
+HTB_F_031	Twisted Definitions	A passion is a fire inside you.
+HTB_F_032	Twisted Definitions	A clock is a device that tells you how much time you have left.
+HTB_F_033	Twisted Definitions	A calling is a purpose you find.
+HTB_F_034	Twisted Definitions	A shopping mall is a place where you go to buy things you don't need.
+HTB_F_035	Twisted Definitions	A hospital is a place where you go to get sick.
+HTB_F_036	Twisted Definitions	A sculpture is a piece of art you can touch.
+HTB_F_037	Twisted Definitions	A blanket is a hug from the fabric.
+HTB_F_038	Twisted Definitions	A calendar is a device that tells you what you missed.
+HTB_F_039	Twisted Definitions	A career is a path you choose.
+HTB_F_040	Twisted Definitions	A map is a piece of paper that tells you where you are not.
+HTB_F_041	Twisted Definitions	A job is a way to make money.
+HTB_F_042	Twisted Definitions	A camera is a device that captures a moment in time.
+HTB_F_043	Twisted Definitions	A couch is a magnet for loose change.
+HTB_F_044	Twisted Definitions	A gym is a place where you pay to lift heavy objects you don't own.
+HTB_F_045	Twisted Definitions	A dream is a goal you strive for.
+HTB_F_046	Twisted Definitions	A television is a window to a world you can't reach.
+HTB_F_047	Twisted Definitions	A movie is a dream you can watch.
+HTB_F_048	Twisted Definitions	A computer is a machine that helps you make mistakes faster.
+HTB_F_049	Twisted Definitions	A sport is a competition you can watch.
+HTB_F_050	Twisted Definitions	Adulthood is a group project where no one knows what they're doing.
+HTB_G_001	Direct Prompts	Tell a joke about emojis.
+HTB_G_002	Direct Prompts	Tell a joke about printer ink.
+HTB_G_003	Direct Prompts	Write a funny joke about parallel parking.
+HTB_G_004	Direct Prompts	Write a joke about flat earthers.
+HTB_G_005	Direct Prompts	Tell me a joke about passwords.
+HTB_G_006	Direct Prompts	Write a joke about x-ray vision.
+HTB_G_007	Direct Prompts	Tell a joke about social media influencers.
+HTB_G_008	Direct Prompts	Write a joke about memes.
+HTB_G_009	Direct Prompts	Tell a joke about stepping on a Lego.
+HTB_G_010	Direct Prompts	Make a joke about freeze breath.
+HTB_G_011	Direct Prompts	Make a joke about forgetting someone's name.
+HTB_G_012	Direct Prompts	Make a joke about GIFs.
+HTB_G_013	Direct Prompts	Tell a joke about fake news.
+HTB_G_014	Direct Prompts	Make a joke about unread emails.
+HTB_G_015	Direct Prompts	Make a joke about Monday mornings.
+HTB_G_016	Direct Prompts	Tell a joke about aliens.
+HTB_G_017	Direct Prompts	Tell a joke about autocorrect.
+HTB_G_018	Direct Prompts	Write a joke about immortality.
+HTB_G_019	Direct Prompts	Write a joke about spell check.
+HTB_G_020	Direct Prompts	Write a joke about hitting reply all.
+HTB_G_021	Direct Prompts	Make a joke about telekinesis.
+HTB_G_022	Direct Prompts	Make a joke about assembling furniture.
+HTB_G_023	Direct Prompts	Tell a joke about viral videos.
+HTB_G_024	Direct Prompts	Write a joke about capitalization.
+HTB_G_025	Direct Prompts	Make a joke about stubbing your toe.
+HTB_G_026	Direct Prompts	Write a joke about self-checkout machines.
+HTB_G_027	Direct Prompts	Make a joke about trending topics.
+HTB_G_028	Direct Prompts	Make a joke about UFOs.
+HTB_G_029	Direct Prompts	Tell a joke about internet history.
+HTB_G_030	Direct Prompts	Make a joke about super strength.
+HTB_G_031	Direct Prompts	Write a joke about time travel.
+HTB_G_032	Direct Prompts	Tell a joke about grammar police.
+HTB_G_033	Direct Prompts	Make a joke about punctuation.
+HTB_G_034	Direct Prompts	Tell a joke about teleportation.
+HTB_G_035	Direct Prompts	Make a joke about mind reading.
+HTB_G_036	Direct Prompts	Make a joke about dictation.
+HTB_G_037	Direct Prompts	Write a joke about buying avocados.
+HTB_G_038	Direct Prompts	Write a joke about super speed.
+HTB_G_039	Direct Prompts	Make a joke about flying.
+HTB_G_040	Direct Prompts	Tell a joke about heat vision.
+HTB_G_041	Direct Prompts	Write a joke about clickbait.
+HTB_G_042	Direct Prompts	Make a joke about conspiracy theories.
+HTB_G_043	Direct Prompts	Tell a joke about voice-to-text.
+HTB_G_044	Direct Prompts	Write a joke about invisibility.
+HTB_G_045	Direct Prompts	Make a joke about autocorrect fails.
+HTB_G_046	Direct Prompts	Write a joke about predictive text.
+HTB_G_047	Direct Prompts	Write a joke about hashtags.
+HTB_G_048	Direct Prompts	Make a joke about sponsored posts.
+HTB_G_049	Direct Prompts	Tell a joke about shapeshifting.
+HTB_G_050	Direct Prompts	Write a joke about awkward silences.
+HTB_H_001	News Headlines	Researchers find link between sleep quality and memory retention
+HTB_H_002	News Headlines	New fitness trend sweeps the nation's gyms
+HTB_H_003	News Headlines	Biologists observe rare bird species returning to historic habitat
+HTB_H_004	News Headlines	Researchers develop new sustainable alternative to plastic
+HTB_H_005	News Headlines	Astronomers capture clearest image yet of distant galaxy
+HTB_H_006	News Headlines	Researchers develop new method for extending shelf life of produce
+HTB_H_007	News Headlines	Local bakery goes viral after introducing giant croissant
+HTB_H_008	News Headlines	Major airline introduces new boarding process to save time
+HTB_H_009	News Headlines	Scientists successfully grow plants in lunar soil
+HTB_H_010	News Headlines	City council approves funding for new public park project
+HTB_H_011	News Headlines	New study challenges previous assumptions about dinosaur diets
+HTB_H_012	News Headlines	Engineers design robot capable of navigating complex terrain
+HTB_H_013	News Headlines	Classic 1980s video game makes unexpected comeback
+HTB_H_014	News Headlines	New study shows houseplants can improve office productivity
+HTB_H_015	News Headlines	Local community rallies to save historic neighborhood theater
+HTB_H_016	News Headlines	Tech company announces major update to its flagship operating system
+HTB_H_017	News Headlines	Tech giant unveils ambitious plan for carbon neutrality
+HTB_H_018	News Headlines	Automaker recalls thousands of vehicles over software glitch
+HTB_H_019	News Headlines	Popular coffee chain introduces new seasonal beverage
+HTB_H_020	News Headlines	Scientists discover new species of deep-sea jellyfish
+HTB_H_021	News Headlines	Automaker unveils concept car featuring radical new design
+HTB_H_022	News Headlines	Popular social media app rolls out new privacy features
+HTB_H_023	News Headlines	Renowned artist opens new exhibition focusing on climate change
+HTB_H_024	News Headlines	Major fashion brand pledges to use only sustainable materials
+HTB_H_025	News Headlines	Major sporting event expected to draw thousands of tourists
+HTB_H_026	News Headlines	Major music festival announces highly anticipated lineup
+HTB_H_027	News Headlines	Tech startup secures major funding for artificial intelligence project
+HTB_H_028	News Headlines	Major retailer announces plans to open 50 new locations
+HTB_H_029	News Headlines	Historic lighthouse undergoes massive restoration effort
+HTB_H_030	News Headlines	New study suggests regular exercise can boost creativity
+HTB_H_031	News Headlines	Popular podcast reaches significant milestone in listener numbers
+HTB_H_032	News Headlines	City's new public transit system sees massive ridership on opening day
+HTB_H_033	News Headlines	Global shipping delays continue to impact supply chains
+HTB_H_034	News Headlines	City council debates proposed changes to zoning laws
+HTB_H_035	News Headlines	Central bank holds interest rates steady for third consecutive month
+HTB_H_036	News Headlines	Local animal shelter reports record number of adoptions
+HTB_H_037	News Headlines	Scientists discover new type of crystal with unique properties
+HTB_H_038	News Headlines	Global coffee prices surge amid unexpected weather patterns
+HTB_H_039	News Headlines	City implements new recycling program to reduce waste
+HTB_H_040	News Headlines	Researchers discover potential new treatment for hair loss
+HTB_H_041	News Headlines	Electric vehicle sales reach record high this quarter
+HTB_H_042	News Headlines	Engineers develop innovative solution for purifying seawater
+HTB_H_043	News Headlines	Popular streaming service announces price hike for next month
+HTB_H_044	News Headlines	Archaeologists uncover ancient Roman bakery in Pompeii
+HTB_H_045	News Headlines	New solar panel technology promises increased efficiency
+HTB_H_046	News Headlines	Chef's innovative fusion restaurant wins prestigious culinary award
+HTB_H_047	News Headlines	Meteorologists predict unusually mild winter for the region
+HTB_H_048	News Headlines	Apple announces changes to upcoming iPhone software
+HTB_H_049	News Headlines	Local marathon sees record number of participants
+HTB_H_050	News Headlines	Scientists find evidence of ancient riverbed on Mars

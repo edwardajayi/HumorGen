@@ -2,7 +2,7 @@
 train_comedian_sft.py
 
 Runs an additional SFT pass on top of the existing HumorGen_SFT_7B model
-using human-written comedian jokes (Shaun Eli) formatted with extracted topics.
+using human-written comedian jokes formatted with extracted topics.
 
 This is a targeted experiment to measure if injecting a small volume of
 high-quality human comedy data improves model output in HumorRank evaluation,
@@ -44,7 +44,6 @@ COM_TRAIN_FILE  = f"{BASE_DIR}/results/alignment_data/comedian_sft_train.jsonl"
 BASE_MODEL  = f"{BASE_DIR}/models/HumorGen_SFT_7B"
 OUTPUT_DIR  = f"{BASE_DIR}/models/HumorGen-Com_7B"
 
-WANDB_PROJECT = "humorgen"
 MAX_SEQ_LENGTH = 1024
 DTYPE = None
 LOAD_IN_4BIT = True
@@ -161,7 +160,7 @@ def train_comedian_sft():
         lr_scheduler_type="cosine",
         seed=42,
         output_dir=OUTPUT_DIR,
-        report_to="wandb",
+        report_to="none",
         run_name="comedian-sft-r16-lr5e5",
         eval_strategy="steps",
         eval_steps=50,
@@ -202,5 +201,4 @@ def train_comedian_sft():
 
 
 if __name__ == "__main__":
-    os.environ["WANDB_PROJECT"] = WANDB_PROJECT
     train_comedian_sft()

@@ -20,7 +20,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Load environment variables (WANDB_API_KEY)
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -48,9 +47,6 @@ DPO_TRAIN_FILE = f"{BASE_DIR}/results/alignment_data/dpo_train_v4.jsonl"
 # Output directories (models folder)
 SFT_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_SFT_7B"
 DPO_OUTPUT_DIR = f"{BASE_DIR}/models/HumorGen_DPO_7B"
-
-# W&B
-WANDB_PROJECT = "humorgen"
 
 # Model
 MODEL_NAME = "Qwen/Qwen2.5-7B-Instruct"
@@ -192,7 +188,7 @@ def train_sft():
         lr_scheduler_type="linear",
         seed=42,
         output_dir=SFT_OUTPUT_DIR,
-        report_to="wandb",
+        report_to="none",
         run_name="sft-r16-lr2e4-b8",
         eval_strategy="steps",
         eval_steps=100,                  # Was 20 — too frequent for 12k data
@@ -285,7 +281,7 @@ def train_dpo():
         seed=42,
         output_dir=DPO_OUTPUT_DIR,
         beta=0.1,
-        report_to="wandb",
+        report_to="none",
         run_name="dpo-r16-lr5e7-b0.1",
         eval_strategy="steps",
         eval_steps=50,                   # Was 10 — too frequent for 6k data
@@ -330,9 +326,6 @@ if __name__ == "__main__":
     print("HUMORGEN TRAINING")
     print("Cognitive Synergy Framework")
     print("=" * 60)
-    
-    # Initialize W&B
-    os.environ["WANDB_PROJECT"] = WANDB_PROJECT
     
     # Check if SFT already exists
     if not os.path.exists(SFT_OUTPUT_DIR):

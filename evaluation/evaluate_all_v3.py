@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 from tqdm import tqdm
 from pathlib import Path
 
-# Load env immediately for LTI Gateway
+# Load API keys and endpoints from environment
 load_dotenv()
 
 # Add repo root to path
