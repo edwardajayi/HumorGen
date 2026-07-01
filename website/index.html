@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="HumorGen — an open-weight ecosystem for computational humor generation from Carnegie Mellon University. The Cognitive Synergy Framework: persona-based distillation for funny language models." />
+  <title>HumorGen — Open-Weight Computational Humor Generation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="icon" href="humorgen-logo.png" type="image/png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top">
+      <img class="brand-logo" src="humorgen-logo.png" alt="HumorGen — Generating laughs. Intelligently." />
+    </a>
+    <nav class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#framework">Framework</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#joker">JOKER</a>
+      <a href="#models">Models</a>
+      <a href="#papers">Papers</a>
+    </nav>
+    <div class="nav-actions">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke-linecap="round"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm" href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Hugging Face</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <img class="hero-logo reveal" src="humorgen-logo.png" alt="HumorGen — Generating laughs. Intelligently." />
+      <div class="reveal">
+        <span class="pill"><span class="dot"></span> Carnegie Mellon University · Apache-2.0 · open weights</span>
+      </div>
+      <h1 class="hero-title reveal">
+        An open-weight ecosystem for
+        <span class="grad">computational humor.</span>
+      </h1>
+      <p class="hero-sub reveal">
+        HumorGen teaches language models to be genuinely funny — not just to
+        produce text that scans as a joke. Built on the
+        <strong>Cognitive Synergy Framework</strong>: a Mixture-of-Thought
+        method that distills six comedic personas into a single model.
+      </p>
+      <div class="hero-cta reveal">
+        <a class="btn btn-primary" href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">View on Hugging Face</a>
+        <a class="btn btn-ghost" href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">Read the paper</a>
+      </div>
+
+      <div class="ticker reveal" id="ticker">
+        <span class="ticker-label">personas</span>
+        <span class="ticker-text" id="tickerText"></span><span class="cursor">▍</span>
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <section class="strip">
+      <div class="marquee">
+        <div class="marquee-track">
+          <span>Open-weight</span><span>•</span>
+          <span>Mixture-of-Thought</span><span>•</span>
+          <span>6 personas</span><span>•</span>
+          <span>SFT + DPO + O-GRPO</span><span>•</span>
+          <span>HumorRank</span><span>•</span>
+          <span>Multilingual</span><span>•</span>
+          <span>CLEF 2026 JOKER</span><span>•</span>
+          <span>Open-weight</span><span>•</span>
+          <span>Mixture-of-Thought</span><span>•</span>
+          <span>6 personas</span><span>•</span>
+          <span>SFT + DPO + O-GRPO</span><span>•</span>
+          <span>HumorRank</span><span>•</span>
+          <span>Multilingual</span><span>•</span>
+          <span>CLEF 2026 JOKER</span><span>•</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEM -->
+    <section class="section" id="problem">
+      <div class="section-head reveal">
+        <span class="kicker">The problem</span>
+        <h2>Funny lives at the edges of the distribution.</h2>
+        <p>Standard next-token prediction rewards the most probable continuation. In humor, the most probable output is always the safest, most generic one.</p>
+      </div>
+      <div class="prose reveal">
+        <p>
+          Comedy lives in the unexpected turn of phrase, the precise word that
+          collapses two meanings at once, the observation that makes a situation
+          suddenly absurd. Training a model to "be funny" with a single
+          instruction does not work — it produces outputs that scan as jokes
+          but fail to land.
+        </p>
+        <p class="callout">
+          HumorGen's premise: a single headline supports
+          <em>multiple valid comedic interpretations.</em> Teach the model that
+          diversity, and the laughs follow.
+        </p>
+      </div>
+    </section>
+
+    <!-- FRAMEWORK -->
+    <section class="section framework" id="framework">
+      <div class="section-head reveal">
+        <span class="kicker">Our approach</span>
+        <h2 class="big-head">The <span class="accent-strong">Cognitive Synergy Framework</span>.</h2>
+        <p>A Mixture-of-Thought method that structures humor generation as an ensemble of six cognitive personas, each grounded in psychological theory.</p>
+      </div>
+      <p class="lede framework-lede reveal">
+        Rather than a single generation path, CSF produces six parallel
+        candidates per input — one from each persona — creating a diverse pool by
+        construction. The student model is then trained on this data, learning
+        that one headline admits many comedic angles.
+      </p>
+      <div class="grid cards personas">
+        <article class="card reveal">
+          <div class="card-icon">😟</div>
+          <h3>The Neurotic</h3>
+          <p class="card-tag">Superiority — Self-Deprecation</p>
+          <p>Anxiety, vulnerability, personal insecurity.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">😏</div>
+          <h3>The Cynic</h3>
+          <p class="card-tag">Superiority — Mockery</p>
+          <p>Hypocrisy and the dark side of social norms.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">👀</div>
+          <h3>The Observer</h3>
+          <p class="card-tag">Incongruity — Relatability</p>
+          <p>The absurdity hiding in ordinary life.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">🔤</div>
+          <h3>The Wordsmith</h3>
+          <p class="card-tag">Incongruity — Linguistic</p>
+          <p>Phonological ambiguity and double entendres.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">😊</div>
+          <h3>The Optimist</h3>
+          <p class="card-tag">Benign Violation</p>
+          <p>Wholesome misinterpretation.</p>
+        </article>
+        <article class="card reveal">
+          <div class="card-icon">🌀</div>
+          <h3>The Absurdist</h3>
+          <p class="card-tag">Incongruity — Surprise</p>
+          <p>Surreal logic and violated causality.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PIPELINE -->
+    <section class="section" id="pipeline">
+      <div class="section-head reveal">
+        <span class="kicker">Training pipeline</span>
+        <h2>From six candidates to one funny model.</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal"><span class="step-num">01</span><h3>Teacher generation</h3><p>A strong LLM generates six candidates per headline — one from each persona — building a diverse training pool by construction.</p></div>
+        <div class="step reveal"><span class="step-num">02</span><h3>Supervised fine-tuning</h3><p>A 7B student (Qwen2.5-7B-Instruct) learns from this diverse pool, with and without Chain-of-Thought reasoning traces.</p></div>
+        <div class="step reveal"><span class="step-num">03</span><h3>Preference alignment</h3><p>HumorRank — a Bradley-Terry pairwise ranker — scores persona outputs. DPO and O-GRPO teach the model which angle is funniest in context.</p></div>
+      </div>
+    </section>
+
+    <!-- JOKER -->
+    <section class="section" id="joker">
+      <div class="section-head reveal">
+        <span class="kicker">CLEF 2026 JOKER Track</span>
+        <h2>Extending to constrained humor.</h2>
+        <p>The CSF isn't limited to open-ended generation. JOKER Task 4 is harder: given a pun word and two required semantic senses, generate a pun-brief that satisfies both senses <em>and</em> still reads as funny.</p>
+      </div>
+      <div class="joker-grid">
+        <div class="joker-card reveal">
+          <h3>Stage 1 — Multilingual base</h3>
+          <p>Domain-agnostic humor pretraining on the SemEval MWAHAHA corpus across all languages, at 14B and 32B scale. General-purpose multilingual humor generators — released independently.</p>
+        </div>
+        <div class="joker-card reveal">
+          <h3>Stage 2 — Per-language JOKER</h3>
+          <p>A two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning in English, French, and Spanish at 14B and 32B.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODELS -->
+    <section class="section" id="models">
+      <div class="section-head reveal">
+        <span class="kicker">Model collection</span>
+        <h2>Open weights, all of them.</h2>
+        <p>Released as LoRA adapters on Hugging Face under <a class="inline-link" href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Jayi2424/HumorGen</a>. Apache-2.0.</p>
+      </div>
+
+      <!-- Core 7B -->
+      <div class="model-group reveal">
+        <div class="model-group-head">
+          <h3>Core HumorGen — 7B</h3>
+          <span class="model-meta">Open-ended headline humor · full ablation across SFT, DPO &amp; O-GRPO · base: Qwen2.5-7B-Instruct</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th>Training</th><th class="center">CoT</th><th>Hugging Face</th></tr></thead>
+            <tbody>
+              <tr><td><code>HumorGen_SFT_7B</code></td><td>Supervised Fine-Tuning</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_SFT_Think_7B</code></td><td>Supervised Fine-Tuning</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_DPO_7B</code></td><td>Direct Preference Optimization</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_DPO_Think_7B</code></td><td>Direct Preference Optimization</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_7B</code></td><td>Offline Group Relative Policy Opt.</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_Think_7B</code></td><td>Offline Group Relative Policy Opt.</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Multilingual base -->
+      <div class="model-group reveal">
+        <div class="model-group-head">
+          <h3>Multilingual Base — 14B &amp; 32B</h3>
+          <span class="model-meta">Domain-agnostic humor pretraining on SemEval MWAHAHA · general-purpose multilingual humor generators</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th>Scale</th><th>Base model</th><th>Hugging Face</th></tr></thead>
+            <tbody>
+              <tr><td><code>HumorGen_SFT_14B</code></td><td>14B</td><td>Qwen3-14B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_14B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_SFT_32B</code></td><td>32B</td><td>Qwen3-32B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_32B" target="_blank" rel="noopener">link ↗</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- JOKER -->
+      <div class="model-group reveal">
+        <div class="model-group-head">
+          <h3>CLEF 2026 JOKER — Constrained Pun Generation</h3>
+          <span class="model-meta">Two-stage cross-lingual LoRA curriculum · English, French &amp; Spanish · 14B and 32B</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th>Language</th><th>Scale</th><th>Hugging Face</th></tr></thead>
+            <tbody>
+              <tr><td><code>HumorGen_JOKER_EN_14B</code></td><td>English</td><td>14B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_EN_14B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_JOKER_EN_32B</code></td><td>English</td><td>32B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_EN_32B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_JOKER_FR_14B</code></td><td>French</td><td>14B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_FR_14B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_JOKER_FR_32B</code></td><td>French</td><td>32B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_FR_32B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_JOKER_ES_14B</code></td><td>Spanish</td><td>14B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_ES_14B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_JOKER_ES_32B</code></td><td>Spanish</td><td>32B</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_JOKER_ES_32B" target="_blank" rel="noopener">link ↗</a></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAPERS -->
+    <section class="section" id="papers">
+      <div class="section-head reveal">
+        <span class="kicker">Papers</span>
+        <h2>Read the work.</h2>
+      </div>
+      <div class="grid papers">
+        <article class="paper reveal">
+          <span class="paper-venue">arXiv 2026</span>
+          <h3>Cognitive Synergy for Humor Generation in Large Language Models via Persona-Based Distillation</h3>
+          <p class="paper-auth">Ajayi, E. et al.</p>
+          <a class="btn btn-ghost btn-sm" href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">arxiv.org/abs/2604.09629 ↗</a>
+        </article>
+        <article class="paper reveal">
+          <span class="paper-venue">CLEF 2026 · Working Notes</span>
+          <h3>Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs: SaLT Lab at the CLEF 2026 JOKER Track</h3>
+          <p class="paper-auth">Ajayi, E. et al. · SaLT Lab, Carnegie Mellon University</p>
+          <a class="btn btn-ghost btn-sm" href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">View PDF ↗</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- CITATION -->
+    <section class="section" id="citation">
+      <div class="section-head reveal">
+        <span class="kicker">Citation</span>
+        <h2>Cite HumorGen.</h2>
+      </div>
+      <div class="cite reveal">
+        <div class="cite-block">
+          <div class="cite-head"><span>arXiv</span><button class="copy-btn" data-target="citeArxiv">copy</button></div>
+          <pre id="citeArxiv"><code>@misc{ajayi2026humorgen,
+  title         = {HumorGen: Cognitive Synergy for Humor Generation in Large Language
+                   Models via Persona-Based Distillation},
+  author        = {Ajayi, Edward and others},
+  year          = {2026},
+  eprint        = {2604.09629},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2604.09629}
+}</code></pre>
+        </div>
+        <div class="cite-block">
+          <div class="cite-head"><span>CLEF 2026</span><button class="copy-btn" data-target="citeClef">copy</button></div>
+          <pre id="citeClef"><code>@inproceedings{ajayi2026joker,
+  title     = {Cross-Lingual Cognitive Synergy for Constrained Humor Generation
+               in LLMs: SaLT Lab at the CLEF 2026 JOKER Track},
+  author    = {Ajayi, Edward and others},
+  booktitle = {Working Notes of CLEF 2026},
+  year      = {2026},
+  url       = {https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf}
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top"><img class="brand-logo brand-logo--foot" src="humorgen-logo.png" alt="HumorGen" /></a>
+        <p class="foot-tag">An open-weight ecosystem for computational humor generation.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Project</h4>
+        <a href="#problem">Problem</a><a href="#framework">Framework</a><a href="#models">Models</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Hugging Face</a>
+        <a href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">arXiv paper</a>
+        <a href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">CLEF paper</a>
+      </div>
+      <div class="foot-col">
+        <h4>Affiliation</h4>
+        <a href="#top">Carnegie Mellon University</a><a href="#citation">Citation</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 HumorGen · Carnegie Mellon University</span>
+      <span>Apache-2.0 · open weights</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
