@@ -145,11 +145,7 @@ main { padding-top: 88px; }
 }
 
 /* ---------- hero ---------- */
-.hero { max-width: var(--maxw); margin: 0 auto; padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 2.5rem) 2rem; text-align: center; }
-.hero-logo {
-  width: min(300px, 78vw); height: auto; margin: 0 auto 1.8rem;
-  display: block; border-radius: 12px;
-}
+.hero { max-width: var(--maxw); margin: 0 auto; padding: clamp(4rem, 9vw, 7rem) clamp(1rem, 4vw, 2.5rem) 2rem; text-align: center; }
 .pill {
   display: inline-flex; align-items: center; gap: .5rem;
   padding: .4rem .9rem; border-radius: 999px;
