@@ -12,12 +12,10 @@ tags:
   - text-generation
 ---
 
-
-
 **An Open-Weight Ecosystem for Computational Humor Generation**
-Carnegie Mellon University
+Carnegie Mellon University · SaLT Lab
 
-[View on Hugging Face](https://huggingface.co/collections/Jayi2424/humorgen) · [Read the Paper](https://arxiv.org/abs/2604.09629) · [CLEF 2026 Paper](https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf)
+[View on Hugging Face](https://huggingface.co/collections/Jayi2424/humorgen) · [Landing repo](https://huggingface.co/Jayi2424/HumorGen) · [Read the Paper](https://arxiv.org/abs/2604.09629) · [CLEF 2026 Paper](https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf)
 
 ---
 
@@ -46,57 +44,57 @@ Rather than a single generation path, CSF produces six parallel candidates per i
 
 **Training pipeline:**
 
-1. **Teacher generation** — A strong LLM generates six candidates per headline, one per persona
-2. **SFT** — A 7B student learns from this diverse pool
-3. **Preference alignment** — HumorRank (Bradley-Terry pairwise ranker) scores the persona outputs; DPO and O-GRPO teach the model which angle is funniest in context
+1. **Teacher generation** — A strong LLM generates six candidates per headline, one per persona.
+2. **Supervised Fine-Tuning (SFT)** — A 7B student (Qwen2.5-7B-Instruct, QLoRA 4-bit, LoRA r/α = 16/16) learns from this diverse pool, with and without Chain-of-Thought reasoning traces. Data: SemEval-2026 MWAHAHA + CSF persona traces.
+3. **Preference alignment** — **HumorRank**, a Bradley-Terry pairwise ranker, scores the persona outputs.
+   - **DPO** (Direct Preference Optimization): preference pairs from a HumorRank pairwise tournament, β = 0.1, initialized from the SFT checkpoint.
+   - **O-GRPO** (Offline Group Relative Policy Optimization): trains on the full group of six persona candidates per headline (group size 6), using HumorRank Bradley-Terry scores as reward, initialized from SFT.
 
 ---
 
-## Extending to Constrained Humor: CLEF 2026 JOKER
+## Key Finding
 
-The CSF is not limited to open-ended generation. **CLEF 2026 JOKER Task 4** poses a harder challenge: given a pun word and two required semantic senses, generate a pun-brief — a sentence that satisfies both senses simultaneously and still reads as funny.
+Cognitive-driven **data curation is far more critical than alignment algorithms or model scale** for humor generation. The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and achieves performance competitive with state-of-the-art proprietary models.
 
-To tackle this, we first train domain-agnostic multilingual humor checkpoints at 14B and 32B scale on the SemEval MWAHAHA corpus across all languages. These **HumorGen Base** models are general-purpose multilingual humor generators and serve as the starting point for JOKER-specific fine-tuning in English, French, and Spanish.
+---
+
+## Extending to Constrained Humor: CLEF 2026 JOKER Task 4
+
+The CSF is not limited to open-ended generation. **CLEF 2026 JOKER Task 4** poses a harder challenge: given a pun word and two required semantic senses, generate a **pun-brief** — a sentence that satisfies both senses simultaneously and still reads as funny. The model must navigate strict lexical constraints while still producing genuinely funny output.
+
+To scale to this multilingual, constrained task, we first train domain-agnostic multilingual humor checkpoints at 14B and 32B scale (HumorGen_SFT_14B and HumorGen_SFT_32B) on the full SemEval MWAHAHA corpus across all languages. These **HumorGen Base** models are general-purpose multilingual humor generators and serve as the starting point for JOKER-specific fine-tuning. The JOKER models are then branched via per-language LoRA fine-tuning in English, French, and Spanish.
 
 ---
 
 ## Model Collection
 
-All models are released as LoRA adapters on Hugging Face under [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen).
+14 open-weight models, released as **PEFT LoRA adapters** on Hugging Face. Collection: [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen). Apache-2.0.
 
----
+### Core HumorGen — 7B (6 models)
 
-### Core HumorGen — 7B
-
-Open-ended headline humor. A full ablation across SFT, DPO, and O-GRPO, with and without Chain-of-Thought reasoning traces.
+Open-ended headline humor. A full ablation across SFT, DPO, and O-GRPO, with and without Chain-of-Thought reasoning traces. Backbone: Qwen2.5-7B-Instruct (QLoRA 4-bit, LoRA r/α = 16/16).
 
 | Model | Training | CoT | Hugging Face |
 |:---|:---|:---:|:---|
 | HumorGen_SFT_7B | Supervised Fine-Tuning | — | [Link](https://huggingface.co/Jayi2424/HumorGen_SFT_7B) |
 | HumorGen_SFT_Think_7B | Supervised Fine-Tuning | Yes | [Link](https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B) |
-| HumorGen_DPO_7B | Direct Preference Optimization | — | [Link](https://huggingface.co/Jayi2424/HumorGen_DPO_7B) |
-| HumorGen_DPO_Think_7B | Direct Preference Optimization | Yes | [Link](https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B) |
-| HumorGen_GRPO_7B | Offline Group Relative Policy Opt. | — | [Link](https://huggingface.co/Jayi2424/HumorGen_GRPO_7B) |
-| HumorGen_GRPO_Think_7B | Offline Group Relative Policy Opt. | Yes | [Link](https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B) |
+| HumorGen_DPO_7B | Direct Preference Optimization (β=0.1, from SFT) | — | [Link](https://huggingface.co/Jayi2424/HumorGen_DPO_7B) |
+| HumorGen_DPO_Think_7B | Direct Preference Optimization (from SFT-Think) | Yes | [Link](https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B) |
+| HumorGen_GRPO_7B | O-GRPO (group size 6, from SFT) | — | [Link](https://huggingface.co/Jayi2424/HumorGen_GRPO_7B) |
+| HumorGen_GRPO_Think_7B | O-GRPO + CoT (strongest core model) | Yes | [Link](https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B) |
 
-Base model: Qwen2.5-7B-Instruct
+### Multilingual Base — 14B & 32B (2 models)
 
----
-
-### Multilingual Base — 14B & 32B
-
-Domain-agnostic humor pretraining on the SemEval MWAHAHA corpus across all languages. Released independently as general-purpose multilingual humor generators.
+Domain-agnostic humor pretraining on SemEval MWAHAHA across all languages. QLoRA 4-bit, LoRA r/α = 16/16. Released independently as general-purpose multilingual humor generators.
 
 | Model | Scale | Base Model | Hugging Face |
 |:---|:---|:---|:---|
 | HumorGen_SFT_14B | 14B | Qwen3-14B | [Link](https://huggingface.co/Jayi2424/HumorGen_SFT_14B) |
 | HumorGen_SFT_32B | 32B | Qwen3-32B | [Link](https://huggingface.co/Jayi2424/HumorGen_SFT_32B) |
 
----
+### CLEF 2026 JOKER Task 4 — Constrained Pun Generation (6 models)
 
-### CLEF 2026 JOKER — Constrained Pun Generation
-
-Two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning. Available at 14B and 32B in English, French, and Spanish.
+Two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning. Available at 14B and 32B in English, French, and Spanish. Task: dual-sense pun-brief generation.
 
 | Model | Language | Scale | Hugging Face |
 |:---|:---|:---|:---|
@@ -109,13 +107,59 @@ Two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-langua
 
 ---
 
+## Usage
+
+All models are PEFT LoRA adapters — load the base model and apply the adapter.
+
+**Core 7B — headline humor:**
+
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
+model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-7B-Instruct", torch_dtype=torch.bfloat16, device_map="auto")
+model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_GRPO_Think_7B")
+
+headline = "Robot passes bar exam; lawyers reassure everyone they are still necessary"
+prompt = (
+    "<|im_start|>system\nThink carefully, then write the best joke you can.\n<|im_end|>\n"
+    f"<|im_start|>user\n{headline}<|im_end|>\n"
+    "<|im_start|>assistant\n"
+)
+inputs  = tokenizer(prompt, return_tensors="pt").to(model.device)
+outputs = model.generate(**inputs, max_new_tokens=300, temperature=0.7, top_p=0.95)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+```
+
+**JOKER — constrained pun-brief:**
+
+```python
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3-32B")
+model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3-32B", torch_dtype=torch.bfloat16, device_map="auto")
+model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_JOKER_EN_32B")
+
+pun_word, sense_1, sense_2 = "bark", "the sound a dog makes", "the outer covering of a tree"
+prompt = (
+    "<|im_start|>system\nYou are an expert at writing puns. Given a pun word and two meanings, "
+    "write a sentence that uses both senses naturally.\n<|im_end|>\n"
+    f"<|im_start|>user\nPun word: {pun_word}\nSense 1: {sense_1}\nSense 2: {sense_2}\n<|im_end|>\n"
+    "<|im_start|>assistant\n"
+)
+outputs = model.generate(**tokenizer(prompt, return_tensors="pt").to(model.device), max_new_tokens=80, temperature=0.8, top_p=0.95)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+```
+
+---
+
 ## Papers
 
 **HumorGen: Cognitive Synergy for Humor Generation in Large Language Models via Persona-Based Distillation**
 Ajayi, E. et al. · arXiv 2026
 [arxiv.org/abs/2604.09629](https://arxiv.org/abs/2604.09629)
 
-**HumorGen at CLEF 2026 JOKER Task 4: Cross-Lingual Constrained Pun Generation via the Cognitive Synergy Framework**
+**Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs: SaLT Lab at the CLEF 2026 JOKER Track**
 Ajayi, E. et al. · Working Notes of CLEF 2026
 [edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf](https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf)
 
@@ -136,8 +180,7 @@ Ajayi, E. et al. · Working Notes of CLEF 2026
 }
 
 @inproceedings{ajayi2026joker,
-  title     = {HumorGen at CLEF 2026 JOKER Task 4: Cross-Lingual Constrained
-               Pun Generation via the Cognitive Synergy Framework},
+  title     = {Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs: SaLT Lab at the CLEF 2026 JOKER Track},
   author    = {Ajayi, Edward and others},
   booktitle = {Working Notes of CLEF 2026},
   year      = {2026},
@@ -147,4 +190,4 @@ Ajayi, E. et al. · Working Notes of CLEF 2026
 
 ---
 
-*Carnegie Mellon University*
+*Carnegie Mellon University · SaLT Lab*

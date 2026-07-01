@@ -317,6 +317,35 @@ details p { color: var(--text-dim); margin-top: .8rem; font-size: .96rem; }
 }
 strong { font-weight: 600; color: var(--text); }
 
+/* ---------- key finding ---------- */
+.finding {
+  margin-top: 2.6rem; max-width: 820px; padding: 1.8rem 2rem;
+  border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--grad-soft); position: relative; overflow: hidden;
+}
+.finding::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--clay); }
+.finding-tag {
+  display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--clay); margin-bottom: .6rem;
+}
+.finding p { color: var(--text); font-size: 1.08rem; line-height: 1.7; }
+.finding strong { color: var(--clay); font-weight: 600; }
+
+/* ---------- usage ---------- */
+.usage { max-width: 860px; margin: 0 auto; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: var(--surface); }
+.usage-tabs { display: flex; gap: .25rem; padding: .5rem .5rem 0; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.usage-tab {
+  font: inherit; font-size: .85rem; font-weight: 600; padding: .6rem 1rem; cursor: pointer;
+  border: none; background: transparent; color: var(--text-faint); border-radius: 8px 8px 0 0;
+  transition: color var(--t), background var(--t);
+}
+.usage-tab:hover { color: var(--text-dim); }
+.usage-tab.active { color: var(--text); background: var(--bg-2); }
+.usage-code { margin: 0; padding: 1.4rem 1.6rem; overflow-x: auto; display: block; }
+.usage-code.active { display: block; }
+.usage-code[hidden] { display: none; }
+.usage-code code { font-family: 'JetBrains Mono', monospace; font-size: .82rem; line-height: 1.65; color: var(--text-dim); white-space: pre; }
+
 /* ---------- prose / problem ---------- */
 .prose { max-width: 720px; font-size: 1.12rem; color: var(--text-dim); display: flex; flex-direction: column; gap: 1.4rem; }
 .prose p { line-height: 1.75; }

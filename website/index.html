@@ -29,6 +29,7 @@
       <a href="#pipeline">Pipeline</a>
       <a href="#joker">JOKER</a>
       <a href="#models">Models</a>
+      <a href="#usage">Usage</a>
       <a href="#papers">Papers</a>
     </nav>
     <div class="nav-actions">
@@ -174,26 +175,30 @@
       </div>
       <div class="steps">
         <div class="step reveal"><span class="step-num">01</span><h3>Teacher generation</h3><p>A strong LLM generates six candidates per headline — one from each persona — building a diverse training pool by construction.</p></div>
-        <div class="step reveal"><span class="step-num">02</span><h3>Supervised fine-tuning</h3><p>A 7B student (Qwen2.5-7B-Instruct) learns from this diverse pool, with and without Chain-of-Thought reasoning traces.</p></div>
-        <div class="step reveal"><span class="step-num">03</span><h3>Preference alignment</h3><p>HumorRank — a Bradley-Terry pairwise ranker — scores persona outputs. DPO and O-GRPO teach the model which angle is funniest in context.</p></div>
+        <div class="step reveal"><span class="step-num">02</span><h3>Supervised fine-tuning</h3><p>A 7B student (Qwen2.5-7B-Instruct, QLoRA 4-bit, LoRA r/α = 16/16) learns from this diverse pool, with and without Chain-of-Thought traces. Data: SemEval-2026 MWAHAHA + CSF persona traces.</p></div>
+        <div class="step reveal"><span class="step-num">03</span><h3>Preference alignment</h3><p>HumorRank — a Bradley-Terry pairwise ranker — scores the persona outputs. <strong>DPO</strong> (β = 0.1) and <strong>O-GRPO</strong> (group size 6, full persona slate) teach the model which angle is funniest in context.</p></div>
+      </div>
+      <div class="finding reveal">
+        <span class="finding-tag">key finding</span>
+        <p>Cognitive-driven <strong>data curation is far more critical than alignment algorithms or model scale</strong> for humor generation. The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and is competitive with state-of-the-art proprietary models.</p>
       </div>
     </section>
 
     <!-- JOKER -->
     <section class="section" id="joker">
       <div class="section-head reveal">
-        <span class="kicker">CLEF 2026 JOKER Track</span>
+        <span class="kicker">CLEF 2026 JOKER · Task 4</span>
         <h2>Extending to constrained humor.</h2>
-        <p>The CSF isn't limited to open-ended generation. JOKER Task 4 is harder: given a pun word and two required semantic senses, generate a pun-brief that satisfies both senses <em>and</em> still reads as funny.</p>
+        <p>The CSF isn't limited to open-ended generation. JOKER Task 4 is harder: given a pun word and two required semantic senses, generate a <em>pun-brief</em> — a sentence that satisfies both senses <em>and</em> still reads as funny. The model must navigate strict lexical constraints without losing the laugh.</p>
       </div>
       <div class="joker-grid">
         <div class="joker-card reveal">
           <h3>Stage 1 — Multilingual base</h3>
-          <p>Domain-agnostic humor pretraining on the SemEval MWAHAHA corpus across all languages, at 14B and 32B scale. General-purpose multilingual humor generators — released independently.</p>
+          <p>Domain-agnostic humor pretraining on the SemEval MWAHAHA corpus across all languages, at 14B and 32B scale (Qwen3, QLoRA 4-bit). General-purpose multilingual humor generators — released independently.</p>
         </div>
         <div class="joker-card reveal">
           <h3>Stage 2 — Per-language JOKER</h3>
-          <p>A two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning in English, French, and Spanish at 14B and 32B.</p>
+          <p>A two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning for dual-sense pun-briefs in English, French, and Spanish at 14B and 32B.</p>
         </div>
       </div>
     </section>
@@ -203,25 +208,25 @@
       <div class="section-head reveal">
         <span class="kicker">Model collection</span>
         <h2>Open weights, all of them.</h2>
-        <p>Released as LoRA adapters on Hugging Face under <a class="inline-link" href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Jayi2424/HumorGen</a>. Apache-2.0.</p>
+        <p>14 models released as <strong>PEFT LoRA adapters</strong> on Hugging Face · collection <a class="inline-link" href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Jayi2424/HumorGen</a> · landing repo <a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen" target="_blank" rel="noopener">Jayi2424/HumorGen</a>. Apache-2.0.</p>
       </div>
 
       <!-- Core 7B -->
       <div class="model-group reveal">
         <div class="model-group-head">
           <h3>Core HumorGen — 7B</h3>
-          <span class="model-meta">Open-ended headline humor · full ablation across SFT, DPO &amp; O-GRPO · base: Qwen2.5-7B-Instruct</span>
+          <span class="model-meta">Open-ended headline humor · full ablation across SFT, DPO &amp; O-GRPO · Qwen2.5-7B-Instruct · QLoRA 4-bit · LoRA r/α = 16/16</span>
         </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Model</th><th>Training</th><th class="center">CoT</th><th>Hugging Face</th></tr></thead>
             <tbody>
               <tr><td><code>HumorGen_SFT_7B</code></td><td>Supervised Fine-Tuning</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_SFT_Think_7B</code></td><td>Supervised Fine-Tuning</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_DPO_7B</code></td><td>Direct Preference Optimization</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_DPO_Think_7B</code></td><td>Direct Preference Optimization</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_GRPO_7B</code></td><td>Offline Group Relative Policy Opt.</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_GRPO_Think_7B</code></td><td>Offline Group Relative Policy Opt.</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_SFT_Think_7B</code></td><td>SFT + reasoning traces</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_DPO_7B</code></td><td>DPO (β=0.1, from SFT)</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_DPO_Think_7B</code></td><td>DPO (from SFT-Think)</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_7B</code></td><td>O-GRPO (group 6, from SFT)</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_Think_7B</code></td><td>O-GRPO + CoT · <em>strongest</em></td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
             </tbody>
           </table>
         </div>
@@ -231,7 +236,7 @@
       <div class="model-group reveal">
         <div class="model-group-head">
           <h3>Multilingual Base — 14B &amp; 32B</h3>
-          <span class="model-meta">Domain-agnostic humor pretraining on SemEval MWAHAHA · general-purpose multilingual humor generators</span>
+          <span class="model-meta">Domain-agnostic humor pretraining on SemEval MWAHAHA (all languages) · Qwen3 · QLoRA 4-bit · LoRA r/α = 16/16 · general-purpose multilingual humor generators</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -247,8 +252,8 @@
       <!-- JOKER -->
       <div class="model-group reveal">
         <div class="model-group-head">
-          <h3>CLEF 2026 JOKER — Constrained Pun Generation</h3>
-          <span class="model-meta">Two-stage cross-lingual LoRA curriculum · English, French &amp; Spanish · 14B and 32B</span>
+          <h3>CLEF 2026 JOKER Task 4 — Constrained Pun Generation</h3>
+          <span class="model-meta">Two-stage cross-lingual LoRA curriculum · dual-sense pun-briefs · English, French &amp; Spanish · 14B and 32B</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -263,6 +268,58 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <!-- USAGE -->
+    <section class="section" id="usage">
+      <div class="section-head reveal">
+        <span class="kicker">Usage</span>
+        <h2>Load an adapter in four lines.</h2>
+        <p>Every model is a PEFT LoRA adapter — load the base, apply the adapter, generate.</p>
+      </div>
+      <div class="usage reveal">
+        <div class="usage-tabs" role="tablist">
+          <button class="usage-tab active" data-tab="core" role="tab">Core 7B — headline</button>
+          <button class="usage-tab" data-tab="joker" role="tab">JOKER — pun-brief</button>
+        </div>
+        <pre class="usage-code active" id="tab-core"><code>from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
+model = AutoModelForCausalLM.from_pretrained(
+    "Qwen/Qwen2.5-7B-Instruct", torch_dtype=torch.bfloat16, device_map="auto")
+model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_GRPO_Think_7B")
+
+headline = "Robot passes bar exam; lawyers reassure everyone they are still necessary"
+prompt = (
+    "&lt;|im_start|&gt;system\nThink carefully, then write the best joke you can.\n&lt;|im_end|&gt;\n"
+    f"&lt;|im_start|&gt;user\n{headline}&lt;|im_end|&gt;\n"
+    "&lt;|im_start|&gt;assistant\n"
+)
+inputs  = tokenizer(prompt, return_tensors="pt").to(model.device)
+outputs = model.generate(**inputs, max_new_tokens=300, temperature=0.7, top_p=0.95)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
+        <pre class="usage-code" id="tab-joker" hidden><code>from transformers import AutoModelForCausalLM, AutoTokenizer
+from peft import PeftModel
+import torch
+
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3-32B")
+model = AutoModelForCausalLM.from_pretrained(
+    "Qwen/Qwen3-32B", torch_dtype=torch.bfloat16, device_map="auto")
+model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_JOKER_EN_32B")
+
+pun_word, sense_1, sense_2 = "bark", "the sound a dog makes", "the outer covering of a tree"
+prompt = (
+    "&lt;|im_start|&gt;system\nYou are an expert at writing puns. Given a pun word and two "
+    "meanings, write a sentence that uses both senses naturally.\n&lt;|im_end|&gt;\n"
+    f"&lt;|im_start|&gt;user\nPun word: {pun_word}\nSense 1: {sense_1}\nSense 2: {sense_2}\n&lt;|im_end|&gt;\n"
+    "&lt;|im_start|&gt;assistant\n"
+)
+inputs  = tokenizer(prompt, return_tensors="pt").to(model.device)
+outputs = model.generate(**inputs, max_new_tokens=80, temperature=0.8, top_p=0.95)
+print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       </div>
     </section>
 

@@ -64,6 +64,18 @@ function type() {
 }
 type();
 
+// ----- usage code tabs -----
+document.querySelectorAll('.usage-tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.usage-tab').forEach((t) => t.classList.remove('active'));
+    document.querySelectorAll('.usage-code').forEach((c) => { c.classList.remove('active'); c.hidden = true; });
+    tab.classList.add('active');
+    const panel = document.getElementById('tab-' + tab.dataset.tab);
+    panel.classList.add('active');
+    panel.hidden = false;
+  });
+});
+
 // ----- citation copy -----
 document.querySelectorAll('.copy-btn').forEach((btn) => {
   btn.addEventListener('click', async () => {
