@@ -24,6 +24,7 @@
       <img class="brand-logo" src="humorgen-logo.png" alt="HumorGen — Generating laughs. Intelligently." />
     </a>
     <nav class="nav-links">
+      <a href="#overview">Overview</a>
       <a href="#problem">Problem</a>
       <a href="#framework">Framework</a>
       <a href="#pipeline">Pipeline</a>
@@ -90,27 +91,48 @@
       </div>
     </section>
 
+    <!-- OVERVIEW / ABSTRACT -->
+    <section class="section" id="overview">
+      <div class="section-head reveal">
+        <span class="kicker">Overview</span>
+        <h2>The whole story, in one paragraph.</h2>
+      </div>
+      <div class="split reveal">
+        <div class="split-card">
+          <span class="sc-tag">What we do</span>
+          <h3>Distill six comedic personas into one 7B model.</h3>
+          <p>A teacher LLM generates humor from six cognitive personas grounded in psychological theory. A 7B student learns from this diverse pool, then preference alignment (DPO and a novel O-GRPO) refines which comedic angle it picks in context.</p>
+        </div>
+        <div class="split-card">
+          <span class="sc-tag">What we find</span>
+          <h3>Data curation beats scale and algorithm.</h3>
+          <p>The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and is competitive with state-of-the-art proprietary models. Cognitive-driven data curation matters far more than the alignment algorithm or model size.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- PROBLEM -->
     <section class="section" id="problem">
       <div class="section-head reveal">
         <span class="kicker">The problem</span>
         <h2>Funny lives at the edges of the distribution.</h2>
-        <p>Standard next-token prediction rewards the most probable continuation. In humor, the most probable output is always the safest, most generic one.</p>
+        <p>Language models struggle to be funny — not because they lack knowledge of humor, but because of how they are trained.</p>
       </div>
-      <div class="prose reveal">
-        <p>
-          Comedy lives in the unexpected turn of phrase, the precise word that
-          collapses two meanings at once, the observation that makes a situation
-          suddenly absurd. Training a model to "be funny" with a single
-          instruction does not work — it produces outputs that scan as jokes
-          but fail to land.
-        </p>
-        <p class="callout">
-          HumorGen's premise: a single headline supports
-          <em>multiple valid comedic interpretations.</em> Teach the model that
-          diversity, and the laughs follow.
-        </p>
+      <div class="split reveal">
+        <div class="split-card">
+          <span class="sc-tag">The objective mismatch</span>
+          <h3>Next-token prediction rewards the median.</h3>
+          <p>Standard training maximizes the likelihood of the next word. The most probable continuation is always the safest, most generic one — so the model is pulled toward the center of the distribution, away from anything surprising.</p>
+        </div>
+        <div class="split-card">
+          <span class="sc-tag">What comedy demands</span>
+          <h3>Incongruity lives in the tail.</h3>
+          <p>Humor lives at the edges: the unexpected turn of phrase, the precise word that collapses two meanings at once, the observation that makes a situation suddenly absurd. The funniest line is rarely the most likely one.</p>
+        </div>
       </div>
+      <p class="callout reveal" style="margin-top:1.6rem;">
+        Training a model to "be funny" with a single instruction does not work — it produces outputs that scan as jokes but fail to land. HumorGen's premise: a single headline supports <em>multiple valid comedic interpretations.</em> Teach the model that diversity, and the laughs follow.
+      </p>
     </section>
 
     <!-- FRAMEWORK -->
@@ -164,6 +186,38 @@
           <p>Surreal logic and violated causality.</p>
         </article>
       </div>
+
+      <div class="theory reveal">
+        <div class="theory-card">
+          <span class="th-tag">Superiority theory</span>
+          <h4>Laughter at another's expense</h4>
+          <p>Humor arises from perceived superiority — over others, social norms, or one's own flaws. Grounds <em>The Neurotic</em> (self-deprecation) and <em>The Cynic</em> (mockery).</p>
+        </div>
+        <div class="theory-card">
+          <span class="th-tag">Incongruity theory</span>
+          <h4>The surprise of mismatched frames</h4>
+          <p>Humor arises when two incompatible interpretations collide. Grounds <em>The Observer</em> (relatability), <em>The Wordsmith</em> (linguistic ambiguity), and <em>The Absurdist</em> (surreal surprise).</p>
+        </div>
+        <div class="theory-card">
+          <span class="th-tag">Benign violation theory</span>
+          <h4>A safe break in the rules</h4>
+          <p>Humor arises when something violates a norm yet feels harmless. Grounds <em>The Optimist</em>'s wholesome misinterpretations.</p>
+        </div>
+      </div>
+      <p class="theory-note reveal">Each persona is a generation path conditioned to embody one comedic lens. Six paths run in parallel per headline, so the candidate pool spans the major psychological theories of humor by construction — not by chance.</p>
+
+      <div class="split reveal" style="margin-top:2.6rem;">
+        <div class="split-card">
+          <span class="sc-tag">Mixture-of-Thought</span>
+          <h3>Six paths, not one.</h3>
+          <p>Instead of a single generation pass, a teacher LLM produces six parallel candidates per input — one from each persona. This creates a diverse pool where every headline is refracted through six comedic lenses.</p>
+        </div>
+        <div class="split-card">
+          <span class="sc-tag">Diversity by construction</span>
+          <h3>One headline, many valid jokes.</h3>
+          <p>The student is trained on this pool, learning that a single input admits multiple correct comedic interpretations. This is the core shift: from "the funny answer" to "a funny answer, chosen well in context."</p>
+        </div>
+      </div>
     </section>
 
     <!-- PIPELINE -->
@@ -177,6 +231,30 @@
         <div class="step reveal"><span class="step-num">02</span><h3>Supervised fine-tuning</h3><p>A 7B student (Qwen2.5-7B-Instruct, QLoRA 4-bit, LoRA r/α = 16/16) learns from this diverse pool, with and without Chain-of-Thought traces. Data: SemEval-2026 MWAHAHA + CSF persona traces.</p></div>
         <div class="step reveal"><span class="step-num">03</span><h3>Preference alignment</h3><p>HumorRank — a Bradley-Terry pairwise ranker — scores the persona outputs. <strong>DPO</strong> (β = 0.1) and <strong>O-GRPO</strong> (group size 6, full persona slate) teach the model which angle is funniest in context.</p></div>
       </div>
+
+      <div class="compare reveal">
+        <div class="compare-col">
+          <span class="cm-sub">DPO</span>
+          <h3>Direct Preference Optimization</h3>
+          <ul>
+            <li>Learn from <strong>pairwise</strong> preferences: a winner vs a loser per pair.</li>
+            <li>Pairs sourced from a HumorRank pairwise tournament over persona candidates.</li>
+            <li>β = 0.1; initialized from the SFT checkpoint.</li>
+            <li>Teaches the model to prefer the funnier of two options.</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <span class="cm-sub">O-GRPO · novel</span>
+          <h3>Offline Group Relative Policy Optimization</h3>
+          <ul>
+            <li>Learn from the <strong>full group</strong> of six persona candidates at once.</li>
+            <li>Group size 6 — one per CSF persona — using HumorRank Bradley-Terry scores as reward.</li>
+            <li>Initialized from SFT; offline (no live rollout).</li>
+            <li>Captures relative quality across the whole comedic slate, not just a binary winner.</li>
+          </ul>
+        </div>
+      </div>
+
       <div class="finding reveal">
         <span class="finding-tag">key finding</span>
         <p>Cognitive-driven <strong>data curation is far more critical than alignment algorithms or model scale</strong> for humor generation. The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and is competitive with state-of-the-art proprietary models.</p>
@@ -200,6 +278,20 @@
           <p>A two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning for dual-sense pun-briefs in English, French, and Spanish at 14B and 32B.</p>
         </div>
       </div>
+
+      <div class="ex-box reveal">
+        <div class="ex-head">Task 4 — a pun-brief, concretely</div>
+        <div class="ex-body">
+          <div class="ex-cell"><div class="ek">Pun word</div><div class="ev"><code>bark</code></div></div>
+          <div class="ex-cell"><div class="ek">Sense 1</div><div class="ev">the sound a dog makes</div></div>
+          <div class="ex-cell"><div class="ek">Sense 2</div><div class="ev">the outer covering of a tree</div></div>
+        </div>
+        <div class="ex-out">
+          <div class="ek">Pun-brief output</div>
+          <div class="ev">"When the dog's <strong>bark</strong> got tangled with the tree's, only one of them could stay quiet about it."</div>
+        </div>
+      </div>
+      <p class="sub-note reveal">The model must satisfy <em>both</em> senses in a single sentence while still reading as funny — a strict lexical constraint that open-ended headline humor never has to meet.</p>
     </section>
 
     <!-- MODELS -->
