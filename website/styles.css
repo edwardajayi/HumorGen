@@ -422,6 +422,36 @@ tbody tr:hover { background: var(--surface-2); }
 td code, .paper code { font-family: 'JetBrains Mono', monospace; font-size: .86rem; color: var(--text); background: var(--surface-2); padding: .15rem .4rem; border-radius: 6px; }
 th.center, td.center { text-align: center; }
 
+/* ---------- leaderboards ---------- */
+.bench-tabs {
+  display: inline-flex; gap: .35rem; padding: .35rem;
+  border-radius: 999px; border: 1px solid var(--border);
+  background: var(--surface); margin-bottom: 1.4rem;
+}
+.bench-tab {
+  font-family: var(--font-sans); font-size: .88rem; font-weight: 600;
+  padding: .55rem 1.1rem; border-radius: 999px; border: none;
+  background: transparent; color: var(--text-dim); cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+.bench-tab.active { background: var(--bg-2); color: var(--text); box-shadow: var(--shadow); }
+.bench-tab:hover:not(.active) { color: var(--text); }
+.bench-panel { margin-bottom: .6rem; }
+.bench-meta {
+  display: flex; flex-direction: column; gap: .35rem;
+  margin-bottom: 1rem; color: var(--text-faint); font-size: .9rem;
+}
+.bench-note { color: var(--text-dim); font-size: .88rem; }
+.leaderboard table { min-width: 640px; }
+.leaderboard td.num, .leaderboard th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'JetBrains Mono', monospace; font-size: .88rem; }
+.leaderboard td.ci { font-size: .84rem; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.leaderboard tbody tr.humorgen-row { background: rgba(201,100,66,.07); }
+.leaderboard tbody tr.humorgen-row td:first-child + td { color: var(--text); font-weight: 600; }
+.leaderboard tbody tr.humorgen-row td.num { color: var(--clay-deep); font-weight: 600; }
+[data-theme="dark"] .leaderboard tbody tr.humorgen-row { background: rgba(217,119,87,.10); }
+[data-theme="dark"] .leaderboard tbody tr.humorgen-row td.num { color: var(--clay-bright); }
+.leaderboard tbody tr.top-row td:first-child + td { font-weight: 600; color: var(--text); }
+
 /* ---------- joker ---------- */
 .joker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.4rem; }
 .joker-card { padding: 1.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }

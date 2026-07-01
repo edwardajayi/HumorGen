@@ -40,12 +40,12 @@ document.querySelectorAll('.reveal').forEach((el, i) => {
 
 // ----- persona ticker (typewriter) -----
 const personas = [
-  'The Neurotic — anxiety, vulnerability, personal insecurity.',
-  'The Cynic — hypocrisy and the dark side of social norms.',
-  'The Observer — the absurdity hiding in ordinary life.',
-  'The Wordsmith — phonological ambiguity and double entendres.',
-  'The Optimist — wholesome misinterpretation.',
-  'The Absurdist — surreal logic and violated causality.',
+  'The Neurotic — Relief Theory: internal anxiety, overthinking, social insecurity.',
+  'The Cynic — Superiority: hypocrisy, biting sarcasm, moral contradictions.',
+  'The Observer — Incongruity: mundane minutiae and awkward social norms.',
+  'The Wordsmith — Linguistic ambiguity: puns, double entendres, phonological play.',
+  'The Optimist — Benign violation: wholesome misinterpretations.',
+  'The Absurdist — Surrealism: non-sequiturs, dream logic, fractured causality.',
 ];
 
 const tickerText = document.getElementById('tickerText');
@@ -71,6 +71,18 @@ document.querySelectorAll('.usage-tab').forEach((tab) => {
     document.querySelectorAll('.usage-code').forEach((c) => { c.classList.remove('active'); c.hidden = true; });
     tab.classList.add('active');
     const panel = document.getElementById('tab-' + tab.dataset.tab);
+    panel.classList.add('active');
+    panel.hidden = false;
+  });
+});
+
+// ----- benchmark leaderboard tabs -----
+document.querySelectorAll('.bench-tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.bench-tab').forEach((t) => t.classList.remove('active'));
+    document.querySelectorAll('.bench-panel').forEach((p) => { p.classList.remove('active'); p.hidden = true; });
+    tab.classList.add('active');
+    const panel = document.getElementById('bench-' + tab.dataset.bench);
     panel.classList.add('active');
     panel.hidden = false;
   });

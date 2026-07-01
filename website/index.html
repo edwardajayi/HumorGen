@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="HumorGen — an open-weight ecosystem for computational humor generation from Carnegie Mellon University. The Cognitive Synergy Framework: persona-based distillation for funny language models." />
+  <meta name="description" content="HumorGen — an open-weight ecosystem for computational humor generation. The Cognitive Synergy Framework: persona-based distillation for funny language models." />
   <title>HumorGen — Open-Weight Computational Humor Generation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,6 +28,7 @@
       <a href="#problem">Problem</a>
       <a href="#framework">Framework</a>
       <a href="#pipeline">Pipeline</a>
+      <a href="#results">Results</a>
       <a href="#joker">JOKER</a>
       <a href="#models">Models</a>
       <a href="#usage">Usage</a>
@@ -46,7 +47,7 @@
     <!-- HERO -->
     <section class="hero">
       <div class="reveal">
-        <span class="pill"><span class="dot"></span> Carnegie Mellon University · Apache-2.0 · open weights</span>
+        <span class="pill"><span class="dot"></span> Open weights · Apache-2.0</span>
       </div>
       <h1 class="hero-title reveal">
         An open-weight ecosystem for
@@ -78,6 +79,7 @@
           <span>6 personas</span><span>•</span>
           <span>SFT + DPO + O-GRPO</span><span>•</span>
           <span>HumorRank</span><span>•</span>
+          <span>HTB</span><span>•</span>
           <span>Multilingual</span><span>•</span>
           <span>CLEF 2026 JOKER</span><span>•</span>
           <span>Open-weight</span><span>•</span>
@@ -85,6 +87,7 @@
           <span>6 personas</span><span>•</span>
           <span>SFT + DPO + O-GRPO</span><span>•</span>
           <span>HumorRank</span><span>•</span>
+          <span>HTB</span><span>•</span>
           <span>Multilingual</span><span>•</span>
           <span>CLEF 2026 JOKER</span><span>•</span>
         </div>
@@ -100,13 +103,13 @@
       <div class="split reveal">
         <div class="split-card">
           <span class="sc-tag">What we do</span>
-          <h3>Distill six comedic personas into one 7B model.</h3>
-          <p>A teacher LLM generates humor from six cognitive personas grounded in psychological theory. A 7B student learns from this diverse pool, then preference alignment (DPO and a novel O-GRPO) refines which comedic angle it picks in context.</p>
+          <h3>Distill six comedic personas into a 7B student.</h3>
+          <p>A teacher ensemble (Kimi-K2 and Qwen2.5-32B-Instruct) generates 24 candidates per headline via CSF — four per persona × six personas. A 7B student (Qwen2.5-7B-Instruct) is fine-tuned on top-ranked jokes from a HumorRank Bradley–Terry tournament judged by Llama 3.3-70B.</p>
         </div>
         <div class="split-card">
           <span class="sc-tag">What we find</span>
-          <h3>Data curation beats scale and algorithm.</h3>
-          <p>The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and is competitive with state-of-the-art proprietary models. Cognitive-driven data curation matters far more than the alignment algorithm or model size.</p>
+          <h3>CSF data curation beats scale — and alignment hits a ceiling.</h3>
+          <p>HumorGen-SFT-7B ranks among the strongest open-weight models and outperforms models many times its size, competitive with frontier systems. DPO matches SFT; O-GRPO trails both. When SFT data is diverse and well-curated, preference optimization yields no significant gains — a <em>data quality ceiling</em>.</p>
         </div>
       </div>
     </section>
@@ -143,79 +146,83 @@
         <p>A Mixture-of-Thought method that structures humor generation as an ensemble of six cognitive personas, each grounded in psychological theory.</p>
       </div>
       <p class="lede framework-lede reveal">
-        Rather than a single generation path, CSF produces six parallel
-        candidates per input — one from each persona — creating a diverse pool by
-        construction. The student model is then trained on this data, learning
-        that one headline admits many comedic angles.
+        Rather than a single generation path, CSF produces 24 parallel
+        candidates per headline — four per persona × six personas — creating a diverse pool by
+        construction. A HumorRank pairwise tournament (Llama 3.3-70B judge, Bradley–Terry) selects top jokes for SFT distillation into a 7B student.
       </p>
       <div class="grid cards personas">
         <article class="card reveal">
           <div class="card-icon">😟</div>
           <h3>The Neurotic</h3>
-          <p class="card-tag">Superiority — Self-Deprecation</p>
-          <p>Anxiety, vulnerability, personal insecurity.</p>
+          <p class="card-tag">Relief Theory · Tension Release</p>
+          <p>Internal anxiety, overthinking, and social insecurity.</p>
         </article>
         <article class="card reveal">
           <div class="card-icon">😏</div>
           <h3>The Cynic</h3>
-          <p class="card-tag">Superiority — Mockery</p>
-          <p>Hypocrisy and the dark side of social norms.</p>
+          <p class="card-tag">Superiority Theory · Social Critique</p>
+          <p>Hypocrisy, biting sarcasm, and moral contradictions.</p>
         </article>
         <article class="card reveal">
           <div class="card-icon">👀</div>
           <h3>The Observer</h3>
-          <p class="card-tag">Incongruity — Relatability</p>
-          <p>The absurdity hiding in ordinary life.</p>
+          <p class="card-tag">Incongruity · Social Mapping</p>
+          <p>Mundane minutiae and unwritten awkward social norms.</p>
         </article>
         <article class="card reveal">
           <div class="card-icon">🔤</div>
           <h3>The Wordsmith</h3>
-          <p class="card-tag">Incongruity — Linguistic</p>
-          <p>Phonological ambiguity and double entendres.</p>
+          <p class="card-tag">Linguistic · Ambiguity</p>
+          <p>Puns, double entendres, and phonological play.</p>
         </article>
         <article class="card reveal">
           <div class="card-icon">😊</div>
           <h3>The Optimist</h3>
-          <p class="card-tag">Benign Violation</p>
-          <p>Wholesome misinterpretation.</p>
+          <p class="card-tag">Benign Violation · Recontextualization</p>
+          <p>Wholesome misinterpretations of potentially negative traits.</p>
         </article>
         <article class="card reveal">
           <div class="card-icon">🌀</div>
           <h3>The Absurdist</h3>
-          <p class="card-tag">Incongruity — Surprise</p>
-          <p>Surreal logic and violated causality.</p>
+          <p class="card-tag">Incongruity · Surrealism</p>
+          <p>Non-sequiturs, dream logic, and fractured causality.</p>
         </article>
       </div>
 
       <div class="theory reveal">
         <div class="theory-card">
+          <span class="th-tag">Relief theory</span>
+          <h4>Tension release</h4>
+          <p>Humor discharges built-up psychological tension. Grounds <em>The Neurotic</em>.</p>
+        </div>
+        <div class="theory-card">
           <span class="th-tag">Superiority theory</span>
           <h4>Laughter at another's expense</h4>
-          <p>Humor arises from perceived superiority — over others, social norms, or one's own flaws. Grounds <em>The Neurotic</em> (self-deprecation) and <em>The Cynic</em> (mockery).</p>
+          <p>Humor arises from perceived superiority or social critique. Grounds <em>The Cynic</em>.</p>
         </div>
         <div class="theory-card">
           <span class="th-tag">Incongruity theory</span>
-          <h4>The surprise of mismatched frames</h4>
-          <p>Humor arises when two incompatible interpretations collide. Grounds <em>The Observer</em> (relatability), <em>The Wordsmith</em> (linguistic ambiguity), and <em>The Absurdist</em> (surreal surprise).</p>
+          <h4>Mismatched frames collide</h4>
+          <p>Humor arises when incompatible interpretations meet. Grounds <em>The Observer</em> (social mapping) and <em>The Absurdist</em> (surrealism).</p>
         </div>
         <div class="theory-card">
-          <span class="th-tag">Benign violation theory</span>
-          <h4>A safe break in the rules</h4>
-          <p>Humor arises when something violates a norm yet feels harmless. Grounds <em>The Optimist</em>'s wholesome misinterpretations.</p>
+          <span class="th-tag">Linguistic · Benign violation</span>
+          <h4>Wordplay &amp; safe rule-breaking</h4>
+          <p>Phonological ambiguity grounds <em>The Wordsmith</em>; harmless norm violations ground <em>The Optimist</em>.</p>
         </div>
       </div>
-      <p class="theory-note reveal">Each persona is a generation path conditioned to embody one comedic lens. Six paths run in parallel per headline, so the candidate pool spans the major psychological theories of humor by construction — not by chance.</p>
+      <p class="theory-note reveal">Each persona generates four candidates per headline (24 total). No persona is hand-picked as “best” — a HumorRank pairwise tournament over all candidates decides which jokes enter training.</p>
 
       <div class="split reveal" style="margin-top:2.6rem;">
         <div class="split-card">
           <span class="sc-tag">Mixture-of-Thought</span>
-          <h3>Six paths, not one.</h3>
-          <p>Instead of a single generation pass, a teacher LLM produces six parallel candidates per input — one from each persona. This creates a diverse pool where every headline is refracted through six comedic lenses.</p>
+          <h3>24 candidates, not one.</h3>
+          <p>A teacher ensemble runs six persona-conditioned paths in parallel, generating four candidates per persona (24 per headline). This routes generation into low-probability, high-variance regions where humor lives.</p>
         </div>
         <div class="split-card">
-          <span class="sc-tag">Diversity by construction</span>
-          <h3>One headline, many valid jokes.</h3>
-          <p>The student is trained on this pool, learning that a single input admits multiple correct comedic interpretations. This is the core shift: from "the funny answer" to "a funny answer, chosen well in context."</p>
+          <span class="sc-tag">Silver teacher distillation</span>
+          <h3>Rank, then distill.</h3>
+          <p>Llama 3.3-70B judges all 24 candidates via pairwise comparison; Bradley–Terry aggregation yields Elo ratings. Top-ranked jokes become SFT targets for the 7B student.</p>
         </div>
       </div>
     </section>
@@ -224,12 +231,12 @@
     <section class="section" id="pipeline">
       <div class="section-head reveal">
         <span class="kicker">Training pipeline</span>
-        <h2>From six candidates to one funny model.</h2>
+        <h2>From twenty-four candidates to one funny model.</h2>
       </div>
       <div class="steps">
-        <div class="step reveal"><span class="step-num">01</span><h3>Teacher generation</h3><p>A strong LLM generates six candidates per headline — one from each persona — building a diverse training pool by construction.</p></div>
-        <div class="step reveal"><span class="step-num">02</span><h3>Supervised fine-tuning</h3><p>A 7B student (Qwen2.5-7B-Instruct, QLoRA 4-bit, LoRA r/α = 16/16) learns from this diverse pool, with and without Chain-of-Thought traces. Data: SemEval-2026 MWAHAHA + CSF persona traces.</p></div>
-        <div class="step reveal"><span class="step-num">03</span><h3>Preference alignment</h3><p>HumorRank — a Bradley-Terry pairwise ranker — scores the persona outputs. <strong>DPO</strong> (β = 0.1) and <strong>O-GRPO</strong> (group size 6, full persona slate) teach the model which angle is funniest in context.</p></div>
+        <div class="step reveal"><span class="step-num">01</span><h3>Teacher generation</h3><p>Kimi-K2 and Qwen2.5-32B-Instruct generate 24 candidates per headline (4 per persona × 6 personas) on SemEval-2026 MWAHAHA — 1,200 prompts, ~28,800 raw candidates.</p></div>
+        <div class="step reveal"><span class="step-num">02</span><h3>Ranking &amp; SFT</h3><p>Llama 3.3-70B-Instruct judges all candidates pairwise; HumorRank Bradley–Terry aggregation yields Elo ratings. Top-ranked jokes fine-tune Qwen2.5-7B-Instruct (LoRA r=16, Unsloth). Think variants add Cognitive Synergy Distillation (CSD) reasoning traces.</p></div>
+        <div class="step reveal"><span class="step-num">03</span><h3>Alignment ablation</h3><p>We test whether preference optimization helps beyond SFT: <strong>DPO</strong> (β = 0.1, pairwise) and <strong>O-GRPO</strong> (G = 24, offline group-relative). Result: DPO matches SFT; O-GRPO trails both — neither improves over a well-curated SFT baseline.</p></div>
       </div>
 
       <div class="compare reveal">
@@ -237,28 +244,102 @@
           <span class="cm-sub">DPO</span>
           <h3>Direct Preference Optimization</h3>
           <ul>
-            <li>Learn from <strong>pairwise</strong> preferences: a winner vs a loser per pair.</li>
-            <li>Pairs sourced from a HumorRank pairwise tournament over persona candidates.</li>
-            <li>β = 0.1; initialized from the SFT checkpoint.</li>
-            <li>Teaches the model to prefer the funnier of two options.</li>
+            <li>Pairwise preferences from HumorRank Elo rankings: top-5 vs bottom-5 per prompt.</li>
+            <li>β = 0.1; initialized from SFT checkpoint.</li>
+            <li>Performance <strong>similar to SFT</strong> — 95% CIs overlap on HTB and SemEval.</li>
+            <li>HumorGen-SFT-7B and HumorGen-DPO-7B cluster at ranks 3–4 on HTB.</li>
           </ul>
         </div>
         <div class="compare-col">
-          <span class="cm-sub">O-GRPO · novel</span>
+          <span class="cm-sub">O-GRPO · offline</span>
           <h3>Offline Group Relative Policy Optimization</h3>
           <ul>
-            <li>Learn from the <strong>full group</strong> of six persona candidates at once.</li>
-            <li>Group size 6 — one per CSF persona — using HumorRank Bradley-Terry scores as reward.</li>
-            <li>Initialized from SFT; offline (no live rollout).</li>
-            <li>Captures relative quality across the whole comedic slate, not just a binary winner.</li>
+            <li>All <strong>24 candidates</strong> per prompt ranked once via Bradley–Terry; group-relative advantages from static scores.</li>
+            <li>G = 24; offline (no live rollout during training).</li>
+            <li>Consistently <strong>underperforms</strong> SFT and DPO (e.g. rank 7th on HTB).</li>
+            <li>Skewed advantage distribution penalizes weaker samples more than it reinforces strong ones.</li>
           </ul>
         </div>
       </div>
 
       <div class="finding reveal">
-        <span class="finding-tag">key finding</span>
-        <p>Cognitive-driven <strong>data curation is far more critical than alignment algorithms or model scale</strong> for humor generation. The 7B HumorGen model significantly outperforms larger instruction-tuned baselines and is competitive with state-of-the-art proprietary models.</p>
+        <span class="finding-tag">key finding · data quality ceiling</span>
+        <p>Targeted <strong>CSF data curation matters more than model scale</strong> for humor: HumorGen-SFT-7B outperforms models 4–18× larger and is competitive with frontier systems. When SFT data is diverse and well-curated, preference optimization (DPO, O-GRPO) yields <strong>no significant gains</strong>. Reasoning-augmented (Think) variants can reduce judged funniness — the “explainer trap.”</p>
       </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="section" id="results">
+      <div class="section-head reveal">
+        <span class="kicker">Evaluation</span>
+        <h2>Two benchmarks. Bradley–Terry leaderboards.</h2>
+        <p>All 15 models ranked via pairwise LLM judging (Llama 3.3-70B-Instruct). Ratings are Elo-scale Bradley–Terry scores with 95% bootstrap confidence intervals — full tables and Qwen-judge results in the paper appendix.</p>
+      </div>
+
+      <div class="bench-tabs reveal" role="tablist">
+        <button class="bench-tab active" data-bench="htb" role="tab">Humor Transfer Bench</button>
+        <button class="bench-tab" data-bench="semeval" role="tab">SemEval MWAHAHA</button>
+      </div>
+
+      <div class="bench-panel active reveal" id="bench-htb">
+        <div class="bench-meta">
+          <span>400 prompts · 8 domains × 50 · 42,000 pairwise comparisons</span>
+          <span class="bench-note">Tests transfer beyond headline-style inputs — no model is fine-tuned on HTB data.</span>
+        </div>
+        <div class="table-wrap leaderboard">
+          <table>
+            <thead><tr><th class="center">Rank</th><th>Model</th><th class="num">BT rating</th><th>95% CI</th></tr></thead>
+            <tbody>
+              <tr class="top-row"><td class="center">1</td><td>GPT-5</td><td class="num">1336.18</td><td class="ci">1323.3 – 1348.3</td></tr>
+              <tr class="top-row"><td class="center">2</td><td>Kimi-K2</td><td class="num">1259.98</td><td class="ci">1249.7 – 1268.5</td></tr>
+              <tr class="humorgen-row"><td class="center">3</td><td>HumorGen SFT-7B</td><td class="num">1128.14</td><td class="ci">1118.3 – 1138.1</td></tr>
+              <tr class="humorgen-row"><td class="center">4</td><td>HumorGen DPO-7B</td><td class="num">1123.72</td><td class="ci">1115.7 – 1134.9</td></tr>
+              <tr class="humorgen-row"><td class="center">5</td><td>HumorGen DPO-Think-7B</td><td class="num">1116.65</td><td class="ci">1107.9 – 1127.1</td></tr>
+              <tr class="humorgen-row"><td class="center">6</td><td>HumorGen SFT-Think-7B</td><td class="num">1085.31</td><td class="ci">1075.8 – 1096.5</td></tr>
+              <tr class="humorgen-row"><td class="center">7</td><td>HumorGen GRPO-7B</td><td class="num">1071.13</td><td class="ci">1060.8 – 1080.1</td></tr>
+              <tr><td class="center">8</td><td>Gemini-2.5-Pro</td><td class="num">1059.07</td><td class="ci">1049.3 – 1068.4</td></tr>
+              <tr class="humorgen-row"><td class="center">9</td><td>HumorGen GRPO-Think-7B</td><td class="num">1055.94</td><td class="ci">1043.8 – 1066.8</td></tr>
+              <tr><td class="center">10</td><td>GPT-OSS-120B</td><td class="num">1048.19</td><td class="ci">1039.7 – 1057.1</td></tr>
+              <tr><td class="center">11</td><td>Qwen3-32B</td><td class="num">990.44</td><td class="ci">981.4 – 999.4</td></tr>
+              <tr><td class="center">12</td><td>phi2-Humor</td><td class="num">803.72</td><td class="ci">794.5 – 818.2</td></tr>
+              <tr class="humorgen-row"><td class="center">13</td><td>HumorGen-Com-7B</td><td class="num">665.93</td><td class="ci">645.5 – 680.0</td></tr>
+              <tr><td class="center">14</td><td>Base Qwen-7B</td><td class="num">643.01</td><td class="ci">628.3 – 658.0</td></tr>
+              <tr><td class="center">15</td><td>JokeGPT</td><td class="num">612.58</td><td class="ci">597.6 – 627.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bench-panel reveal" id="bench-semeval" hidden>
+        <div class="bench-meta">
+          <span>50 headlines · SemEval-2026 MWAHAHA test set · 5,250 pairwise comparisons</span>
+          <span class="bench-note">News-headline humor generation — the established benchmark for this task.</span>
+        </div>
+        <div class="table-wrap leaderboard">
+          <table>
+            <thead><tr><th class="center">Rank</th><th>Model</th><th class="num">BT rating</th><th>95% CI</th></tr></thead>
+            <tbody>
+              <tr class="top-row"><td class="center">1</td><td>GPT-5</td><td class="num">1378.73</td><td class="ci">1346.1 – 1421.5</td></tr>
+              <tr class="top-row"><td class="center">2</td><td>Kimi-K2</td><td class="num">1279.63</td><td class="ci">1245.0 – 1322.1</td></tr>
+              <tr class="top-row"><td class="center">3</td><td>Gemini-2.5-Pro</td><td class="num">1247.80</td><td class="ci">1212.4 – 1279.7</td></tr>
+              <tr class="humorgen-row"><td class="center">4</td><td>HumorGen SFT-7B</td><td class="num">1140.37</td><td class="ci">1107.9 – 1173.2</td></tr>
+              <tr class="humorgen-row"><td class="center">5</td><td>HumorGen DPO-7B</td><td class="num">1135.25</td><td class="ci">1101.9 – 1160.2</td></tr>
+              <tr class="humorgen-row"><td class="center">6</td><td>HumorGen GRPO-7B</td><td class="num">1089.84</td><td class="ci">1060.7 – 1114.1</td></tr>
+              <tr><td class="center">7</td><td>GPT-OSS-120B</td><td class="num">1049.99</td><td class="ci">1019.8 – 1081.5</td></tr>
+              <tr class="humorgen-row"><td class="center">8</td><td>HumorGen SFT-Think-7B</td><td class="num">1049.99</td><td class="ci">1016.3 – 1084.5</td></tr>
+              <tr class="humorgen-row"><td class="center">9</td><td>HumorGen DPO-Think-7B</td><td class="num">1031.30</td><td class="ci">1002.1 – 1058.0</td></tr>
+              <tr><td class="center">10</td><td>Qwen3-32B</td><td class="num">1023.18</td><td class="ci">997.0 – 1046.0</td></tr>
+              <tr class="humorgen-row"><td class="center">11</td><td>HumorGen GRPO-Think-7B</td><td class="num">948.51</td><td class="ci">914.7 – 982.6</td></tr>
+              <tr><td class="center">12</td><td>phi2-Humor</td><td class="num">791.32</td><td class="ci">751.8 – 826.1</td></tr>
+              <tr class="humorgen-row"><td class="center">13</td><td>HumorGen-Com-7B</td><td class="num">721.97</td><td class="ci">682.3 – 750.8</td></tr>
+              <tr><td class="center">14</td><td>Base Qwen-7B</td><td class="num">673.16</td><td class="ci">643.1 – 718.0</td></tr>
+              <tr><td class="center">15</td><td>JokeGPT</td><td class="num">438.97</td><td class="ci">384.3 – 500.2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="sub-note reveal">Cross-judge Kendall τ = 0.87 (HTB) and 0.83 (SemEval) between Llama 3.3-70B and Qwen 2.5-72B judges — model ordering is robust to judge choice. HumorGen-SFT-7B and DPO-7B cluster at ranks 3–4 on HTB and 4–5 on SemEval, ahead of models 4–18× their size.</p>
     </section>
 
     <!-- JOKER -->
@@ -270,28 +351,36 @@
       </div>
       <div class="joker-grid">
         <div class="joker-card reveal">
-          <h3>Stage 1 — Multilingual base</h3>
-          <p>Domain-agnostic humor pretraining on the SemEval MWAHAHA corpus across all languages, at 14B and 32B scale (Qwen3, QLoRA 4-bit). General-purpose multilingual humor generators — released independently.</p>
+          <h3>Stage 1 — Humor prior</h3>
+          <p>QLoRA fine-tuning on ~12k CSF-curated English headline jokes (SemEval MWAHAHA train set). Produces HumorGen-SFT-14B and HumorGen-SFT-32B — general humor checkpoints before any JOKER data.</p>
         </div>
         <div class="joker-card reveal">
-          <h3>Stage 2 — Per-language JOKER</h3>
-          <p>A two-stage cross-lingual LoRA curriculum: multilingual pretraining → per-language JOKER fine-tuning for dual-sense pun-briefs in English, French, and Spanish at 14B and 32B.</p>
+          <h3>Stage 2a — English JOKER</h3>
+          <p>English student fine-tunes directly on 3,985 monolingual JOKER CSF examples. Bridges open-ended headline humor → constrained pun-brief generation.</p>
+        </div>
+        <div class="joker-card reveal">
+          <h3>Stage 2b — Multilingual warm-up</h3>
+          <p>French and Spanish branch from Stage 1 into a shared warm-up on 11,038 combined EN+FR+ES JOKER examples — broader pun-brief exposure before per-language specialization.</p>
+        </div>
+        <div class="joker-card reveal">
+          <h3>Stage 3 — FR / ES specialization</h3>
+          <p>Per-language fine-tuning on monolingual JOKER CSF sets (FR: 3,952 rows; ES: 3,101 rows) at reduced learning rate. Six open-weight adapters released (EN/FR/ES × 14B/32B).</p>
         </div>
       </div>
 
       <div class="ex-box reveal">
-        <div class="ex-head">Task 4 — a pun-brief, concretely</div>
+        <div class="ex-head">Task 4 pun brief — example from the JOKER test set (English, het_1261)</div>
         <div class="ex-body">
-          <div class="ex-cell"><div class="ek">Pun word</div><div class="ev"><code>bark</code></div></div>
-          <div class="ex-cell"><div class="ek">Sense 1</div><div class="ev">the sound a dog makes</div></div>
-          <div class="ex-cell"><div class="ek">Sense 2</div><div class="ev">the outer covering of a tree</div></div>
+          <div class="ex-cell"><div class="ek">Pun word</div><div class="ev"><code>vein</code></div></div>
+          <div class="ex-cell"><div class="ek">Sense A</div><div class="ev">blood vessel toward heart</div></div>
+          <div class="ex-cell"><div class="ek">Sense B</div><div class="ev">to no avail (<em>in vain</em>)</div></div>
         </div>
         <div class="ex-out">
-          <div class="ek">Pun-brief output</div>
-          <div class="ev">"When the dog's <strong>bark</strong> got tangled with the tree's, only one of them could stay quiet about it."</div>
+          <div class="ek">Generated joke (Kimi-CSF system)</div>
+          <div class="ev">“He paid the hospital twelve grand for an I.V., watched the bag drip empty into his arm, then flatlined anyway. Turns out the whole transfusion was <strong>in vein</strong>.”</div>
         </div>
       </div>
-      <p class="sub-note reveal">The model must satisfy <em>both</em> senses in a single sentence while still reading as funny — a strict lexical constraint that open-ended headline humor never has to meet.</p>
+      <p class="sub-note reveal">A valid pun-brief must use the pun word, activate both senses, read naturally in the target language, and still be funny. Our JOKER ablation finds that <strong>CSF guidance at test time</strong> dominates distillation: Kimi-CSF leads all three language tracks; student models transfer structural competence but not the multi-candidate search breadth of the full CSF pipeline.</p>
     </section>
 
     <!-- MODELS -->
@@ -306,18 +395,18 @@
       <div class="model-group reveal">
         <div class="model-group-head">
           <h3>Core HumorGen — 7B</h3>
-          <span class="model-meta">Open-ended headline humor · full ablation across SFT, DPO &amp; O-GRPO · Qwen2.5-7B-Instruct · QLoRA 4-bit · LoRA r/α = 16/16</span>
+          <span class="model-meta">Open-ended headline humor · full ablation across SFT, DPO &amp; O-GRPO · Qwen2.5-7B-Instruct · LoRA r=16 · HumorGen-SFT-7B &amp; DPO-7B rank highest</span>
         </div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Model</th><th>Training</th><th class="center">CoT</th><th>Hugging Face</th></tr></thead>
+            <thead><tr><th>Model</th><th>Training</th><th class="center">CSD</th><th>Hugging Face</th></tr></thead>
             <tbody>
               <tr><td><code>HumorGen_SFT_7B</code></td><td>Supervised Fine-Tuning</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_SFT_Think_7B</code></td><td>SFT + reasoning traces</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_SFT_Think_7B</code></td><td>SFT + CSD traces</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_SFT_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
               <tr><td><code>HumorGen_DPO_7B</code></td><td>DPO (β=0.1, from SFT)</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
               <tr><td><code>HumorGen_DPO_Think_7B</code></td><td>DPO (from SFT-Think)</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_DPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_GRPO_7B</code></td><td>O-GRPO (group 6, from SFT)</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
-              <tr><td><code>HumorGen_GRPO_Think_7B</code></td><td>O-GRPO + CoT · <em>strongest</em></td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_7B</code></td><td>O-GRPO (G=24, from SFT)</td><td class="center">—</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
+              <tr><td><code>HumorGen_GRPO_Think_7B</code></td><td>O-GRPO + CSD traces</td><td class="center">yes</td><td><a class="inline-link" href="https://huggingface.co/Jayi2424/HumorGen_GRPO_Think_7B" target="_blank" rel="noopener">link ↗</a></td></tr>
             </tbody>
           </table>
         </div>
@@ -327,7 +416,7 @@
       <div class="model-group reveal">
         <div class="model-group-head">
           <h3>Multilingual Base — 14B &amp; 32B</h3>
-          <span class="model-meta">Domain-agnostic humor pretraining on SemEval MWAHAHA (all languages) · Qwen3 · QLoRA 4-bit · LoRA r/α = 16/16 · general-purpose multilingual humor generators</span>
+          <span class="model-meta">Stage-1 humor prior on ~12k CSF-curated English MWAHAHA headlines · Qwen3-14B/32B · QLoRA 4-bit · starting point for JOKER fine-tuning</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -344,7 +433,7 @@
       <div class="model-group reveal">
         <div class="model-group-head">
           <h3>CLEF 2026 JOKER Task 4 — Constrained Pun Generation</h3>
-          <span class="model-meta">Two-stage cross-lingual LoRA curriculum · dual-sense pun-briefs · English, French &amp; Spanish · 14B and 32B</span>
+          <span class="model-meta">Four-stage cross-lingual LoRA curriculum · dual-sense pun-briefs · English, French &amp; Spanish · 14B and 32B</span>
         </div>
         <div class="table-wrap">
           <table>
@@ -381,16 +470,16 @@ import torch
 tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2.5-7B-Instruct")
 model = AutoModelForCausalLM.from_pretrained(
     "Qwen/Qwen2.5-7B-Instruct", torch_dtype=torch.bfloat16, device_map="auto")
-model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_GRPO_Think_7B")
+model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_SFT_7B")
 
-headline = "Robot passes bar exam; lawyers reassure everyone they are still necessary"
+headline = "Scientists discover that staring at spreadsheets increases sadness by 94%"
 prompt = (
-    "&lt;|im_start|&gt;system\nThink carefully, then write the best joke you can.\n&lt;|im_end|&gt;\n"
+    "&lt;|im_start|&gt;system\nYou are a comedy writer. Write one sharp, witty joke for the headline.\n&lt;|im_end|&gt;\n"
     f"&lt;|im_start|&gt;user\n{headline}&lt;|im_end|&gt;\n"
     "&lt;|im_start|&gt;assistant\n"
 )
 inputs  = tokenizer(prompt, return_tensors="pt").to(model.device)
-outputs = model.generate(**inputs, max_new_tokens=300, temperature=0.7, top_p=0.95)
+outputs = model.generate(**inputs, max_new_tokens=120, temperature=0.9, top_p=0.95)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
         <pre class="usage-code" id="tab-joker" hidden><code>from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel
@@ -401,12 +490,13 @@ model = AutoModelForCausalLM.from_pretrained(
     "Qwen/Qwen3-32B", torch_dtype=torch.bfloat16, device_map="auto")
 model = PeftModel.from_pretrained(model, "Jayi2424/HumorGen_JOKER_EN_32B")
 
-pun_word, sense_1, sense_2 = "bark", "the sound a dog makes", "the outer covering of a tree"
+pun_word = "vein"
+sense_a = "blood vessel toward heart"
+sense_b = "to no avail (in vain)"
 prompt = (
-    "&lt;|im_start|&gt;system\nYou are an expert at writing puns. Given a pun word and two "
-    "meanings, write a sentence that uses both senses naturally.\n&lt;|im_end|&gt;\n"
-    f"&lt;|im_start|&gt;user\nPun word: {pun_word}\nSense 1: {sense_1}\nSense 2: {sense_2}\n&lt;|im_end|&gt;\n"
-    "&lt;|im_start|&gt;assistant\n"
+    "Write a humorous text for this pun brief.\n\n"
+    f"Language: English\nPun word: {pun_word}\n"
+    f"Sense A: {sense_a}\nSense B: {sense_b}\n"
 )
 inputs  = tokenizer(prompt, return_tensors="pt").to(model.device)
 outputs = model.generate(**inputs, max_new_tokens=80, temperature=0.8, top_p=0.95)
@@ -423,14 +513,14 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       <div class="grid papers">
         <article class="paper reveal">
           <span class="paper-venue">arXiv 2026</span>
-          <h3>Cognitive Synergy for Humor Generation in Large Language Models via Persona-Based Distillation</h3>
-          <p class="paper-auth">Ajayi, E. et al.</p>
+          <h3>HumorGen: Cognitive Synergy for Humor Generation in Large Language Models via Persona-Based Distillation</h3>
+          <p class="paper-auth">Ajayi, E. &amp; Mitra, P.</p>
           <a class="btn btn-ghost btn-sm" href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">arxiv.org/abs/2604.09629 ↗</a>
         </article>
         <article class="paper reveal">
           <span class="paper-venue">CLEF 2026 · Working Notes</span>
-          <h3>Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs: SaLT Lab at the CLEF 2026 JOKER Track</h3>
-          <p class="paper-auth">Ajayi, E. et al. · SaLT Lab, Carnegie Mellon University</p>
+          <h3>Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs</h3>
+          <p class="paper-auth">Ajayi, E. &amp; Mitra, P. · CLEF 2026 JOKER Track</p>
           <a class="btn btn-ghost btn-sm" href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">View PDF ↗</a>
         </article>
       </div>
@@ -448,7 +538,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
           <pre id="citeArxiv"><code>@misc{ajayi2026humorgen,
   title         = {HumorGen: Cognitive Synergy for Humor Generation in Large Language
                    Models via Persona-Based Distillation},
-  author        = {Ajayi, Edward and others},
+  author        = {Ajayi, Edward and Mitra, Prasenjit},
   year          = {2026},
   eprint        = {2604.09629},
   archivePrefix = {arXiv},
@@ -461,7 +551,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
           <pre id="citeClef"><code>@inproceedings{ajayi2026joker,
   title     = {Cross-Lingual Cognitive Synergy for Constrained Humor Generation
                in LLMs: SaLT Lab at the CLEF 2026 JOKER Track},
-  author    = {Ajayi, Edward and others},
+  author    = {Ajayi, Edward and Mitra, Prasenjit},
   booktitle = {Working Notes of CLEF 2026},
   year      = {2026},
   url       = {https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf}
@@ -479,7 +569,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       </div>
       <div class="foot-col">
         <h4>Project</h4>
-        <a href="#problem">Problem</a><a href="#framework">Framework</a><a href="#models">Models</a>
+        <a href="#problem">Problem</a><a href="#framework">Framework</a><a href="#results">Results</a><a href="#models">Models</a>
       </div>
       <div class="foot-col">
         <h4>Resources</h4>
@@ -488,12 +578,12 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
         <a href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">CLEF paper</a>
       </div>
       <div class="foot-col">
-        <h4>Affiliation</h4>
-        <a href="#top">Carnegie Mellon University</a><a href="#citation">Citation</a>
+        <h4>Cite</h4>
+        <a href="#citation">Citation</a><a href="#papers">Papers</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 HumorGen · Carnegie Mellon University</span>
+      <span>© 2026 HumorGen</span>
       <span>Apache-2.0 · open weights</span>
     </div>
   </footer>

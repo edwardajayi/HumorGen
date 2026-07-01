@@ -1,0 +1,969 @@
+%% SaLT Lab — CLEF 2026 JOKER Track working notes (Task 4)
+%% Compile: pdflatex salt-joker2026 && bibtex salt-joker2026 &&
+%%          pdflatex salt-joker2026 && pdflatex salt-joker2026
+\documentclass[]{ceurart}
+
+\sloppy
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, fit, calc, shapes.misc}
+\usepackage{listings}
+\lstset{breaklines=true}
+
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins}
+
+\definecolor{enColor}{HTML}{2563EB}
+\definecolor{frColor}{HTML}{DB2777}
+\definecolor{esColor}{HTML}{059669}
+\definecolor{paperbg}{HTML}{F8FAFC}
+
+\newtcolorbox{punbox}[3]{%
+  enhanced, valign=top, width=\linewidth,
+  colback=paperbg, colframe=#1,
+  boxrule=0.7pt, arc=3pt,
+  left=5pt, right=5pt, top=8pt, bottom=5pt,
+  boxsep=2pt,
+  fonttitle=\bfseries\sffamily\small, coltitle=white,
+  colbacktitle=#1,
+  title={#2 \hfill {\tiny\textit{#3}}},
+  attach boxed title to top left={yshift=-2mm, xshift=2pt},
+  boxed title style={colback=#1, boxrule=0pt, arc=2pt},
+}
+\newcommand{\seclabel}[2]{{\scriptsize\sffamily\bfseries\textcolor{#1}{\MakeUppercase{#2}}}\par\vspace{1pt}}
+\newcommand{\fieldname}[1]{{\scriptsize\textbf{#1:}}\,}
+\setlength{\parskip}{0pt}
+
+\begin{document}
+
+\copyrightyear{2026}
+\copyrightclause{Copyright for this paper by its authors.
+  Use permitted under Creative Commons License Attribution 4.0
+  International (CC BY 4.0).}
+
+\conference{CLEF 2026 Working Notes, 21 -- 24 September 2026, Jena, Germany}
+
+% \title{SaLT Lab at the CLEF 2026 JOKER Track: Guided Creativity for
+% Multilingual Humor Generation}
+
+% \title{Multilingual Humor Generation via Cognitive Synergy Framework: SaLT Lab at the CLEF 2026 JOKER Track}
+\title{Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs: SaLT Lab at the CLEF 2026 JOKER Track}
+
+\title[mode=sub]{SaLT Lab at CLEF 2026}
+
+\author[1]{Edward Ajayi}[email=eaajayi@andrew.cmu.edu]
+\author[1]{Prasenjit Mitra}[email=prasenjm@andrew.cmu.edu]
+\cormark[1]
+\address[1]{Carnegie Mellon University Africa, Kigali, Rwanda}
+\cortext[1]{Corresponding author.}
+
+\begin{abstract}
+We present the SaLT Lab's submission to Task~4 (Humor Generation) of the CLEF 2026 JOKER Track. Generating humor from strict semantic constraints, such as those defined by dual-sense pun briefs, remains a significant challenge for large language models (LLMs). To address this, we adapt the Cognitive Synergy Framework (CSF), a theory-guided ensemble of distinct comedic personas, to the domain of constrained cross-lingual pun generation across English, French, and Spanish. We utilize this framework both as an active test-time generation pipeline and as a synthetic data curation engine to construct a cross-lingual LoRA distillation curriculum. To empirically isolate the drivers of generative performance, we conduct a comprehensive pairwise ablation study evaluating four submitted systems across varying degrees of CSF guidance and model scale (14B and 32B parameters). Our internal evaluations reveal that explicit test-time guidance via CSF significantly outperforms unguided generation. Furthermore, while cross-lingual distillation successfully transfers structural competence into smaller open-weight models, the cognitive diversity of the multi-persona CSF pipeline remains the dominant factor in humor quality.
+\end{abstract}
+
+\begin{keywords}
+  Humor generation \sep
+  Pun generation \sep
+  Large Language Models \sep
+  Cognitive Synergy \sep
+  Cross-lingual transfer
+\end{keywords}
+
+\maketitle
+
+%=============================================================================
+\section{Introduction}
+\label{sec:introduction}
+%=============================================================================
+Despite rapid advances in the text generation capabilities of large language models (LLMs), producing text that is both linguistically coherent and genuinely humorous remains a formidable challenge. Historically, computational humor research has emphasized detection and understanding; generation, by contrast, remains underexplored. This gap is significant, as generating contextually appropriate humor is widely considered a hallmark of advanced natural language understanding. Effective jokes necessitate \emph{controlled incongruity}: the output must satisfy strict structural constraints (e.g., vocabulary, grammar, and thematic relevance) while simultaneously subverting expectations to evoke surprise. However, standard next-token prediction objectives inherently optimize for high-probability continuations. This paradigm biases models toward safe, predictable, or overly literal outputs, directly contradicting the low-probability semantic surprise that characterizes comedy~\cite{ajayi2026humorgen}.
+
+Task~4 of the CLEF 2026 JOKER Track~\cite{ermakova2026jokertrack,kuzmin2026task4} (alongside tasks for humor-aware information retrieval~\cite{vachharajani2026task1}, pun translation~\cite{ermakova2026task2}, and onomastic wordplay translation~\cite{ermakova2026task3}) introduces a rigorous testbed for evaluating these generative capabilities. Participating systems are provided a structured \emph{pun brief}—specifying a pun word and two intended semantic senses—and are tasked with generating a short, humorous text that successfully activates both meanings. This shared task introduces two orthogonal difficulties to the humor generation problem: navigating \emph{hard lexical obligations} and executing \emph{cross-lingual generation} in English, French, and Spanish.
+
+To address these challenges, we adapt the Cognitive Synergy Framework (CSF)~\cite{ajayi2026humorgen}—a Mixture-of-Thought approach grounded in psychological theories of humor—from its original application in English headline generation to the domain of constrained, multilingual pun generation.
+%% TODO: Placeholder for a table showing a sample generated joke in EN, FR, and ES.
+%% \begin{table}[h]
+%%   \caption{Sample pun briefs and generated jokes across English, French, and Spanish tracks.}
+%%   % Add tabular data here...
+%% \end{table}
+
+\begin{figure}[ht]
+\centering
+\sffamily\footnotesize
+\setlength{\baselineskip}{11pt}
+
+\begin{minipage}[t]{0.327\linewidth}
+\begin{punbox}{enColor}{English}{het\_1261}
+\seclabel{enColor}{Input}
+\fieldname{Pun word}\textit{vein}\\
+\fieldname{Sense A}blood vessel toward heart\\
+\fieldname{Sense B}to no avail (\textit{in vain})\\
+\fieldname{Keywords}I.V.; in vein; all in vein; save; tried to save him; vein
+\vspace{2pt}\hrule height 0.4pt
+\vspace{2pt}
+\seclabel{enColor}{Output (joke)}
+\textit{``He paid the hospital twelve grand for an I.V., watched the bag drip empty into his arm, then flatlined anyway. Turns out the whole transfusion was in \textbf{\textcolor{enColor}{vein}}.''}
+\end{punbox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.327\linewidth}
+\begin{punbox}{frColor}{Fran\c{c}ais}{fr\_1009}
+\seclabel{frColor}{Input}
+\fieldname{Pun word}\textit{sortir de ses gonds}\\
+\fieldname{Sense A}sortir de ses gonds (porte, sens propre)\\
+\fieldname{Sense B}sortir de ses gonds = s'\'enerver (sens figur\'e)
+\vspace{2pt}\hrule height 0.4pt
+\vspace{2pt}
+\seclabel{frColor}{Output (joke)}
+\textit{``Deux menuisiers installaient des portes, rien ne s'alignait. Plus \c{c}a for\c{c}ait, plus \c{c}a coin\c{c}ait~: ils finissent juste par \textbf{\textcolor{frColor}{sortir de leurs gonds}}.''}
+\end{punbox}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.327\linewidth}
+\begin{punbox}{esColor}{Espa\~nol}{es\_0780}
+\seclabel{esColor}{Input}
+\fieldname{Pun word}\textit{facultades}\\
+\fieldname{Sense A}facultades (universidad)\\
+\fieldname{Sense B}facultades (capacidades mentales/f\'isicas)
+\vspace{2pt}\hrule height 0.4pt
+\vspace{2pt}
+\seclabel{esColor}{Output (joke)}
+\textit{``Estudi\'e diez a\~nos en la facultad de Medicina. Sal\'i con t\'itulo, con deuda... y sin \textbf{\textcolor{esColor}{facultades}}.''}
+\end{punbox}
+\end{minipage}
+
+\caption{Examples of multilingual pun generation from the JOKER test set. For each language, the system receives a structured \emph{pun brief} (top) specifying a target pun word, two intended semantic senses, and optional keywords. The generated joke (bottom) must creatively weave a cohesive narrative that successfully activates both distinct meanings. Examples highlight successful system outputs in English, French, and Spanish.}
+\label{fig:pun-examples}
+\end{figure}
+
+In this paper, we present the SaLT Lab's submissions to all three language tracks of JOKER Task~4. Rather than deploying a single, monolithic pipeline, we developed four distinct systems designed to empirically isolate the mechanisms that drive creative humor generation. Specifically, we investigate whether the cognitive guidance provided by CSF is most effective when applied at \emph{test time} (via active search and persona-based reasoning) or when distilled into model parameters at \emph{training time}:
+\begin{itemize}
+  \item \textbf{Kimi-CSF}: Our primary guided system, which executes the complete CSF pipeline at \emph{test time}. Using the Kimi K2.6 backbone~\cite{team2025kimi}, it generates and ranks multiple persona-driven joke candidates per brief to select the optimal output.
+  \item \textbf{Kimi-Plain}: An unguided baseline utilizing the same Kimi K2.6 model with a direct, zero-shot prompt. This system isolates the performance gains directly attributable to test-time cognitive guidance.
+  \item \textbf{HumorGen-JOKER (32B and 14B)}: Two open-weight student models (Qwen~3-32B and Qwen~3-14B)~\cite{yang2025qwen3} fine-tuned exclusively on synthetic data curated by the CSF pipeline. At inference, these models generate jokes without explicit prompting guidance, allowing us to evaluate the efficacy of distilling creative reasoning across languages.
+\end{itemize}
+
+Beyond our official shared task participation, this system lineup enables a comprehensive internal pairwise ablation study. Our primary objective is to quantify the relative contributions of test-time search, prompt-based guidance, and open-weight distillation in producing cross-lingual humor under strict semantic constraints.
+
+To this end, the remainder of the paper proceeds as follows. Section~\ref{sec:methodology} formalizes the constrained generation task and details the core CSF pipeline. Section~\ref{sec:experiments} outlines our experimental framework, including the cross-lingual distillation curriculum and the pairwise evaluation protocol. In Section~\ref{sec:results}, we present official shared task scores alongside an in-depth analysis of our internal ablation findings. Finally, Section~\ref{sec:conclusions} summarizes our contributions and discusses avenues for future work.
+%=============================================================================
+\section{Related Work}
+
+
+\subsection{Computational Humor and Pun Generation in LLMs}
+Recent advancements in the capabilities of Large Language Models (LLMs) have driven their adoption across diverse domains of human communication, including creative text generation~\cite{yang2024human}. Consequently, computational humor generation has emerged as a domain of growing interest~\cite{cao2025humorous}, spurring research into specialized reasoning techniques tailored for comedic tasks across various modalities~\cite{zhong2024let, wang2024innovative}. Despite these efforts, robust humor generation remains underexplored and highly challenging~\cite{zhang2026humorchain, goel2024automating}. Notably, recent studies demonstrate that standard logical reasoning methods like Chain of Thought (CoT) are fundamentally ill-suited for humor generation, as humor relies on subverting logic rather than strictly following it~\cite{zhong2024let}. In this work, we address this limitation by replacing standard CoT with the Cognitive Synergy Framework (CSF)~\cite{ajayi2026humorgen}, utilizing a Mixture-of-Thought approach to enforce the strict dual-sense constraints required for pun generation without sacrificing creative surprise.
+
+
+\subsection{Theory-Guided Creative Humor Generation}
+The domain of computational humor is deeply intertwined with linguistic and psychological theories that attempt to formalize what makes a text funny. While theoretical frameworks do not inherently guarantee high-quality generation, several studies have successfully integrated theoretical components---such as theory-guided reasoning---to steer LLM creativity~\cite{zhang2026humorchain, lemmens2026computational}. Most notably, recent works like HumorGen~\cite{ajayi2026humorgen} leverage multiple psychological and linguistic theories of humor to construct the Cognitive Synergy Framework (CSF), utilizing an ensemble of distinct comedic personas to help LLMs generate more diverse and effective humor. In this work, we build upon this foundation by demonstrating that theory-guided cognitive synergy can be successfully adapted beyond open-ended English headline generation to solve highly constrained, cross-lingual pun tasks.
+
+
+\subsection{Multilingual Humor Generation}
+The vast majority of research in computational humor has historically been confined to the English language, with comparatively little exploration of other languages. While some recent works have leveraged multilingual corpora for computational humor tasks\cite{ermakova2025overview, ermakova2023joker}, a significant limitation is that most existing non-English datasets are designed primarily for humor \emph{detection} or \emph{classification} rather than \emph{generation}~\cite{he2024chumor, he2025chumor, ortega2018uo, yatsu2018comparison, ajayiautomatic}. Recently, initiatives like the SemEval 2026 MWAHAHA shared task~\cite{semeval2026mwahaha} have begun shifting the focus toward multilingual humor generation, yet comprehensive generation methodologies remain sparse. In this work, we bridge this gap by extending the Cognitive Synergy Framework\cite{ajayi2026humorgen} into French and Spanish. By utilizing a cross-lingual LoRA distillation curriculum, we demonstrate that complex humor generation capabilities can be effectively transferred from high-resource English datasets to low-resource target languages, establishing a robust methodology for multilingual computational creativity.
+
+%=============================================================================
+\section{Methodology}
+\label{sec:methodology}
+%=============================================================================
+
+\subsection{Humor Generation Pipeline Overview}
+\label{sec:design}
+
+Existing training data for constrained pun generation suffers from two limitations:
+the provided jokes often lack strong comedic quality, and human evaluations of
+those jokes are occasionally inconsistent.
+We address both by using the Cognitive Synergy Framework
+(CSF)~\cite{ajayi2026humorgen} to generate high-quality synthetic training data
+from the official pun briefs.
+A valid joke must satisfy four conditions:
+\begin{itemize}
+    \item Use the given pun word (or a clear morphological variant).
+    \item Activate both intended senses simultaneously.
+    \item Read naturally, without forced or template-like phrasing.
+    \item Be written entirely in the target language.
+\end{itemize}
+
+Figure~\ref{fig:architecture} illustrates the overall pipeline.
+CSF generates a pool of $K$ candidate jokes per brief via $K$ distinct cognitive
+personas; a pairwise ranking model then selects the best candidate.
+This pipeline operates in two roles across our systems:
+during \emph{training}, it curates SFT data for the open-weight student models;
+during \emph{inference}, it drives generation and selection for the primary
+guided system.
+The remaining systems either omit guidance entirely or receive it only implicitly
+through the SFT objective, enabling a controlled ablation of where and how
+cognitive guidance contributes to humor generation.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{images/architecture.jpeg}
+  \caption{Humor Generation with Guided Creativity pipeline. The Cognitive Synergy Module uses a pun brief to generate multiple candidate jokes. A pairwise ranking model selects the best candidates to curate a high-quality humor training corpus. This synthetic data is used to train open-weight student models, which generate the final output jokes.}
+  \label{fig:architecture}
+\end{figure}
+
+
+
+\subsection{Problem Formulation}
+\label{sec:formalization}
+
+We frame pun-brief generation as conditional language modeling: given a brief
+$x$, produce a humorous response $y$.
+Following prior work~\cite{ajayi2026humorgen}, CSF generates a candidate pool
+via Mixture-of-Thought with $K$ cognitive personas:
+\begin{equation}
+  \mathcal{C}(x) = \{ y_k \mid z_k \sim \pi_{\mathrm{teacher}}(\cdot \mid x, p_k),\;
+  k = 1,\ldots,K \}
+  \label{eq:csf-pool}
+\end{equation}
+where $p_k$ denotes persona $k$ and $z_k$ is the persona-conditioned reasoning
+trace; $y_k$ is the final joke extracted from that trace.
+A pairwise ranking model~\cite{ajayi2026humorrank} selects the best candidate via
+comparison over $\mathcal{C}(x)$ and Bradley--Terry MLE aggregation:
+\begin{equation}
+  y^* = \underset{y \in \mathcal{C}(x)}{\arg\max}\; \mathrm{Score}_{\mathrm{BT}}(y \mid x)
+  \label{eq:csf-select}
+\end{equation}
+For training-time distillation, we retain the top-ranked candidates per training brief
+to form $\mathcal{D}_{\mathrm{SFT}}$ and fine-tune
+open-weight models with standard cross-entropy:
+\begin{equation}
+  \mathcal{L}_{\mathrm{SFT}}(\theta) =
+  -\mathbb{E}_{(x,y) \sim \mathcal{D}_{\mathrm{SFT}}}\bigl[\log \pi_\theta(y \mid x)\bigr]
+  \label{eq:sft}
+\end{equation}
+Pairwise aggregation for \emph{evaluation} is defined in
+Section~\ref{sec:eval-protocol}.
+
+
+
+\subsection{System Architectures and Ablation Variants}
+\label{sec:system-designs}
+
+We design three system variants that differ exclusively in \emph{where} CSF
+guidance is applied, enabling a controlled ablation of its contribution.
+
+\paragraph{Full test-time guidance:}
+The primary system applies the complete CSF pipeline at inference: for each
+test brief, $K$ persona-conditioned candidates are generated and the pairwise
+ranker selects the best output (Eqs.~\ref{eq:csf-pool}--\ref{eq:csf-select}).
+Persona prompts are adapted from English headlines to multilingual pun briefs
+(Appendix~\ref{sec:app-prompts}).
+If the top-ranked candidate fails constraint verification, the system cascades
+to lower-ranked candidates before regenerating.
+
+\paragraph{Prompt-only baseline:}
+To isolate the value of guided generation, a baseline system uses the same
+underlying model but generates jokes via a single structured prompt, with no
+persona pool and no pairwise ranking.
+This provides a direct, controlled comparison against the guided variant.
+
+\paragraph{Training-time distillation:}
+To test whether CSF reasoning can be internalized into model parameters,
+two open-weight student models are fine-tuned exclusively on CSF-curated
+data~(Eq.~\ref{eq:sft}).
+At inference, these models receive no CSF guidance; the SFT objective is the
+only channel through which structured creative supervision is encoded.
+This allows a direct comparison between active pipeline search at generation
+time and distillation of that search into model weights.
+
+\subsection{Synthetic Training Data Curation}
+\label{sec:system-cd}
+
+For the distilled student models, CSF and the pairwise ranker are applied
+\emph{only} at training time to construct $\mathcal{D}_{\mathrm{SFT}}$
+(Eq.~\ref{eq:sft}).
+For each training pun brief, $K$ persona-conditioned candidates are generated
+and ranked; the top candidates per brief are retained as SFT targets.
+Student models trained on this corpus then generate at test time without any
+guided pipeline, using the same prompt as the baseline.
+
+To support cross-lingual pun generation, training follows a staged curriculum.
+First, a general humor prior is established by fine-tuning on a large set of
+CSF-curated English headline jokes~\cite{ajayi2026humorgen,semeval2026mwahaha},
+producing a language-general humor checkpoint that does not use JOKER pun briefs.
+Subsequent stages adapt this checkpoint to the pun-brief domain, with an
+asymmetric path for French and Spanish to account for their smaller training
+corpora (details in Section~\ref{sec:training-config}).
+
+\subsection{Post-Generation Constraint Verification}
+\label{sec:verification}
+
+All four systems apply the following five rule-based checks to each generated
+candidate before it is accepted.
+Failed candidates are discarded and generation is retried; for the guided system,
+failure triggers a cascade to lower-ranked candidates before regeneration.
+
+\begin{table}[h]
+  \caption{Post-generation constraint verification rules applied by all systems.}
+  \label{tab:verification}
+  \small
+  \begin{tabular}{cl}
+    \toprule
+    Rule & Requirement \\
+    \midrule
+    R1 & Output written entirely in the target language \\
+    R2 & Pun word present (morphological variants permitted) \\
+    R3 & Both Sense~A and Sense~B demonstrably reflected \\
+    R4 & Output is not a copy of the pun brief \\
+    R5 & Short (1--3 sentences), non-empty, joke-like \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%=============================================================================
+\section{Experimental Setup}
+\label{sec:experiments}
+%=============================================================================
+
+\begin{table}[t]
+  \small
+  \setlength{\tabcolsep}{5pt}
+  \begin{tabular}{lcccc}
+    \toprule
+    \multicolumn{5}{c}{\textbf{Submitted System Configurations:}} \\
+    \midrule
+    & Kimi-CSF & Kimi-Plain & JOKER-32B & JOKER-14B \\
+    \midrule
+    \textit{Training stage} \\
+    \quad CSF on training briefs        & -- & -- & \checkmark & \checkmark \\
+    \quad Pairwise ranking on train     & -- & -- & \checkmark & \checkmark \\
+    \quad SFT on top-ranked candidates  & -- & -- & \checkmark & \checkmark \\
+    \midrule
+    \textit{Test stage} \\
+    \quad CSF at test time              & \checkmark & -- & -- & -- \\
+    \quad Pairwise ranking at test time & \checkmark & -- & -- & -- \\
+    \quad Generation backbone           & Kimi K2.6 & Kimi K2.6 & Qwen3-32B & Qwen3-14B \\
+    \quad Constraint verification       & \checkmark & \checkmark & \checkmark & \checkmark \\
+    \midrule
+    Trained on organizer reference jokes & -- & -- & -- & -- \\
+    \bottomrule
+  \end{tabular}
+  \caption{Submitted system configurations showing where CSF and pairwise
+    ranking are applied across training and test stages.
+    Student models (JOKER-32B/14B) receive guidance only through training
+    distillation; Kimi-CSF applies the full pipeline at test time.
+    No system is trained on organizer reference jokes.}
+  \label{tab:system-matrix}
+\end{table}
+
+
+\subsection{Task Data and Brief Format}
+\label{sec:data}
+
+We use the official JOKER Task~4 releases for English, French, and
+Spanish~\cite{ermakova2026jokertrack,kuzmin2026task4}.
+Each instance provides a \emph{pun brief}: language, pun word, Sense~A,
+Sense~B, and optional keywords.
+Training instances additionally include a human \texttt{reference\_joke};
+test instances do not.
+We do not use the reference jokes at any stage; our SFT supervision consists
+entirely of CSF-generated candidates selected by the pairwise ranker~\cite{ajayi2026humorrank}.
+
+\subsection{Cross-Lingual Training Curriculum}
+\label{sec:training-config}
+
+Student model fine-tuning follows a staged curriculum designed to address two
+challenges: adapting from general humor generation to the structured pun-brief
+task, and transferring across languages with unequal training data.
+All stages use QLoRA (4-bit quantization, Unsloth) on Qwen3-14B and Qwen3-32B,
+with full hyperparameter details in Table~\ref{tab:curriculum} and
+Appendix~\ref{sec:app-hyperparams}.
+
+\paragraph{Stage 1: Domain-Agnostic Humor Pretraining:}
+Before any JOKER-specific adaptation, both student models are initialized
+from a general humor checkpoint trained on CSF-curated English headline
+jokes~\cite{ajayi2026humorgen,semeval2026mwahaha} ($\approx$12{,}000 examples).
+This stage instills a language-general sense of comedic structure and
+timing, providing a stronger initialization than raw Qwen3 base weights
+for all subsequent pun-brief adaptation.
+
+\paragraph{Stage 2a: Target-Domain Adaptation (English):}
+The English student model fine-tunes directly from the Stage~1 checkpoint
+on the English monolingual JOKER CSF dataset (3,985 examples;
+Table~\ref{tab:sft-data}).
+This stage bridges the domain gap between open-ended headline humor and
+constrained pun-brief generation: the model must learn to parse the
+structured brief format and reliably activate both intended senses.
+English has sufficient JOKER training data ($\sim$4k rows) to support
+direct two-stage adaptation without a multilingual warm-up.
+
+\paragraph{Stage 2b: Cross-Lingual Transfer Initialization (FR/ES):}
+French and Spanish have substantially smaller per-language JOKER corpora
+(3,952 and 3,101 rows respectively; Table~\ref{tab:sft-data}).
+Fine-tuning directly on these limited sets risks overfitting and poor
+cross-lingual transfer.
+We therefore branch French and Spanish from the Stage~1 checkpoint into a
+shared warm-up on the combined EN+FR+ES JOKER set (11,038 examples),
+giving the model broad exposure to the pun-brief task structure across
+languages before per-language specialization.
+
+\paragraph{Stage 3: Language-Specific Specialization (FR/ES):}
+From the shared multilingual checkpoint, French and Spanish each fine-tune
+on their respective monolingual JOKER CSF sets at a reduced learning rate
+($5{\times}10^{-5}$) for one epoch.
+This final stage narrows the model's output distribution to the phonological
+and lexical patterns of each target language while preserving the structural
+competence gained in Stage~2b.
+
+\begin{table}[t]
+  \caption{JOKER SFT datasets from training data curation (CSF + pairwise ranking on training briefs).}
+  \label{tab:sft-data}
+  \small
+  \begin{tabular}{lrl}
+    \toprule
+    Dataset & Rows & Role \\
+    \midrule
+    English monolingual      & 3,985  & EN Stage 2a \\
+    French monolingual       & 3,952  & FR Stage 3 \\
+    Spanish monolingual      & 3,101  & ES Stage 3 \\
+    Multilingual (EN+FR+ES)  & 11,038 & FR/ES Stage 2b warm-up \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+
+\begin{table}[t]
+  \caption{LoRA fine-tuning schedule (QLoRA 4-bit, Unsloth).
+    Epoch counts are configured maxima; early stopping may terminate sooner
+    (Appendix~\ref{sec:app-hyperparams}).}
+  \label{tab:curriculum}
+  \small
+  \begin{tabular}{clrrll}
+    \toprule
+    Stage & Track & Rows & Max ep. & LR & Base $\rightarrow$ Output \\
+    \midrule
+    1   & all   & 12{,}000 & 3    & 2e-4 & Qwen3 $\rightarrow$ HumorGen-SFT \\
+    2a  & EN    & 3{,}985  & 2    & 1e-4 & HumorGen-SFT $\rightarrow$ JOKER-EN \\
+    2b  & FR/ES & 11{,}038 & 2    & 1e-4 & HumorGen-SFT $\rightarrow$ JOKER-MULTI \\
+    3   & FR    & 3{,}952  & 1    & 5e-5 & JOKER-MULTI $\rightarrow$ JOKER-FR \\
+    3   & ES    & 3{,}101  & 1    & 5e-5 & JOKER-MULTI $\rightarrow$ JOKER-ES \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Inference Configuration}
+\label{sec:inference}
+
+Inference budgets are asymmetric by design, reflecting the ablation structure
+rather than compute parity.
+Kimi-CSF exhausts all $K$ candidates per brief through multi-persona generation
+followed by pairwise ranking, incurring the highest per-brief cost.
+Kimi-Plain and the HumorGen-JOKER student models use single-path decoding,
+retrying up to 15 times on constraint verification failure.
+This design ensures that any performance gap between systems is attributable
+to the presence or absence of guided generation, not to inference budget.
+
+For the distilled student models, the appropriate language-specific checkpoint
+is selected per language track (EN, FR, or ES) according to the fine-tuning
+curriculum in Table~\ref{tab:curriculum}.
+
+\begin{table}[t]
+  \caption{Official JOKER Task~4 Arena submissions (all four systems, three
+    language tracks). Each row is a separate \texttt{run\_id} on CodaBench.}
+  \label{tab:submissions}
+  \small
+  \begin{tabular}{llccc}
+    \toprule
+    System & CodaBench \texttt{run\_id} & EN & FR & ES \\
+    \midrule
+    Kimi-CSF           & \texttt{SaLT\_task4\_KimiCSF}     & \checkmark & \checkmark & \checkmark \\
+    Kimi-Plain         & \texttt{SaLT\_task4\_KimiPlain}    & \checkmark & \checkmark & \checkmark \\
+    HumorGen-JOKER-32B & \texttt{SaLT\_task4\_HumorGen32B}  & \checkmark & \checkmark & \checkmark \\
+    HumorGen-JOKER-14B & \texttt{SaLT\_task4\_HumorGen14B}  & \checkmark & \checkmark & \checkmark \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Evaluation Protocol}
+\label{sec:eval-protocol}
+
+We report results at two levels (Table~\ref{tab:submissions}).
+\textbf{Primary:} official JOKER Lab Arena Bradley--Terry scores for all
+twelve submitted runs, benchmarking each system against the full participant
+pool (Table~\ref{tab:arena}; expected ${\sim}$30 June 2026).
+\textbf{Interim:} a controlled pairwise ranking study conducted on our four
+uploaded submission files, using the exact test-set jokes, to preview relative
+system ordering before Arena release.
+
+For the interim study, each language forms a bundle of four system outputs per
+test brief; all $\binom{4}{2}=6$ system pairs are judged by an LLM judge with
+50\% position swapping to control for ordering bias.
+Outcomes are aggregated via Bradley--Terry MLE~\cite{ajayi2026humorrank}:
+latent ratings $R_i, R_j$ satisfy
+\begin{equation}
+  P(i \succ j) = \frac{1}{1 + 10^{(R_j - R_i)/400}}
+  \label{eq:bt}
+\end{equation}
+Ratings are anchored at 1000 with 95\% bootstrap confidence intervals.
+This internal evaluation does not rank other JOKER participants; official Arena
+scores provide the competitive context.
+
+%=============================================================================
+\section{Results and Analysis}
+\label{sec:results}
+%=============================================================================
+
+\subsection{Official Shared Task Evaluation}
+\label{sec:arena}
+
+Table~\ref{tab:arena} reports official Arena Bradley--Terry scores for
+\textbf{each of our four submitted systems} in EN, FR, and ES once the JOKER
+Lab leaderboard is published (anticipated late June 2026).
+Every system in Table~\ref{tab:submissions} was uploaded to CodaBench; we
+intentionally compete all four variants in the shared Arena to observe how
+test-time guidance, distillation, and scale behave under the same official
+evaluation protocol as other teams.
+
+\begin{table}[t]
+  \caption{JOKER Lab Arena scores for all four submitted systems (twelve runs).
+    To be populated upon official leaderboard release (${\sim}$30 June 2026).}
+  \label{tab:arena}
+  \small
+  \begin{tabular}{lccc}
+    \toprule
+    System & EN & FR & ES \\
+    \midrule
+    Kimi-CSF    (\texttt{SaLT\_task4\_KimiCSF})       & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} \\
+    Kimi-Plain  (\texttt{SaLT\_task4\_KimiPlain})      & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} \\
+    JOKER-32B   (\texttt{SaLT\_task4\_HumorGen32B})   & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} \\
+    JOKER-14B   (\texttt{SaLT\_task4\_HumorGen14B})   & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} & \multicolumn{1}{c}{TBD} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Pairwise Ablation Study}
+\label{sec:interim-results}
+
+Figure~\ref{fig:bt-leaderboards} presents interim Bradley--Terry rankings
+from the four-system pairwise study (${\sim}$900--936 judgments per language).
+
+A key finding is the proximity of the student models to their teacher backbone
+at plain generation.
+Kimi-Plain (which applies Kimi K2.6 with a single structured prompt and no
+guidance) achieves BT ratings of 959.6, 982.1, and 992.0 across EN, FR, and
+ES respectively.
+The distilled open-weight students (HumorGen-JOKER-32B/14B, referred to as
+JOKER-32B/14B in summary tables) trail Kimi-Plain by only 15--75 BT points
+across most language-system combinations, despite being substantially smaller
+models trained solely on CSF-curated synthetic data.
+This confirms that the SFT curriculum successfully transfers the structural
+competence of pun-brief generation into open-weight parameters.
+
+Kimi-CSF ranks first in every track by a substantial margin
+(BT: 1186.7 EN, 1105.9 FR, 1138.5 ES).
+Two cross-lingual patterns emerge.
+First, the CSF lead is language-dependent: the BT gap between Kimi-CSF and the
+nearest competitor ranges from 124 points (FR) to 227 (EN), with French
+competitors compressing into a tighter band (BT~942--982).
+Second, fine-tuned model order reverses in French: HumorGen-JOKER-14B outranks
+32B (BT 969.4 vs.\ 942.6), inverting the English and Spanish ordering.
+Tables~\ref{tab:en}--\ref{tab:es} and Figure~\ref{fig:heatmaps} provide full
+statistics and head-to-head win rates.
+These findings are provisional until validated against Table~\ref{tab:arena}.
+
+\begin{figure}[t]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/bt_en.png}
+    \caption{English (150 test briefs). Kimi-CSF leads by the largest BT
+      margin across all languages; Kimi-Plain, HumorGen-JOKER-32B, and 14B
+      cluster within 52 BT points, so scale and distillation do not separate
+      the non-CSF systems in EN.}
+    \label{fig:bt-en}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/bt_fr.png}
+    \caption{French (156 test briefs). Kimi-CSF remains first but the BT
+      lead compresses; HumorGen-JOKER-14B overtakes 32B, the only language
+      where the smaller fine-tuned model ranks higher.}
+    \label{fig:bt-fr}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/bt_es.png}
+    \caption{Spanish (151 test briefs). Kimi-CSF leads decisively despite
+      the thinnest FR/ES training split (3,101 rows); 32B again outranks 14B,
+      paralleling English rather than French.}
+    \label{fig:bt-es}
+  \end{subfigure}
+  \caption{Bradley--Terry leaderboards from the four-system pairwise ablation
+    on submitted JOKER Task~4 jokes, by language.
+    Bars show global BT ratings (anchor 1000); error bars denote 95\%
+    bootstrap confidence intervals.
+    Kimi-CSF tops all three tracks, but cross-lingual ranking structure
+    differs: competitor separation tightens in French, and the HumorGen-JOKER
+    32B/14B order flips only in FR.}
+  \label{fig:bt-leaderboards}
+\end{figure}
+
+\subsection{English Track Results}
+\label{sec:en}
+
+Figure~\ref{fig:bt-en} and Table~\ref{tab:en} summarize English results.
+Kimi-CSF achieves BT~1186.7, 227 points above Kimi-Plain and 241 above
+HumorGen-JOKER-32B.
+The three non-CSF systems occupy a narrow band (BT~908--960), indicating that
+neither plain API prompting nor open-weight distillation produces clear
+quality separation in English once CSF guidance is removed.
+English exhibits the largest absolute BT lead for Kimi-CSF across the
+multilingual evaluation.
+
+\begin{table}[t]
+  \caption{English pairwise ablation results (complements Figure~\ref{fig:bt-en}).
+    BT = Bradley--Terry rating; W/L = wins/losses over all six pairwise
+    matchups per test brief; Marginal\% = fraction of opponents beaten.
+    Kimi-CSF's BT lead (227 over Kimi-Plain) is the largest cross-lingual gap;
+    remaining systems differ by at most 52 BT points.}
+  \label{tab:en}
+  \small
+  \begin{tabular}{rlrcrrc}
+    \toprule
+    Rank & System & BT Score & Confidence Interval & Wins & Losses & Win Rate (\%) \\
+    \midrule
+    1 & Kimi-CSF            & 1186.7 & [1165, 1216] & 363 &  87 & 80.7 \\
+    2 & Kimi-Plain          &  959.6 & [934, 985] & 196 & 254 & 43.6 \\
+    3 & HumorGen-JOKER-32B  &  945.6 & [922, 969] & 185 & 265 & 41.1 \\
+    4 & HumorGen-JOKER-14B  &  908.1 & [884, 929] & 156 & 294 & 34.6 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+Head-to-head win rates corroborate the BT ordering
+(Figure~\ref{fig:heatmap-en}): Kimi-CSF wins 80.7\% (121--29) against
+Kimi-Plain, 78.7\% (118--32) against HumorGen-JOKER-32B, and 82.7\%
+(124--26) against HumorGen-JOKER-14B.
+
+
+\subsection{French Track Results}
+\label{sec:fr}
+
+Figure~\ref{fig:bt-fr} and Table~\ref{tab:fr} summarize French results.
+Kimi-CSF retains first place (BT~1105.9) but the lead over Kimi-Plain
+compresses to 124 BT points, less than half the English gap.
+The competitor tier is tighter overall (BT~942--982): Kimi-Plain,
+HumorGen-JOKER-14B, and 32B are separated by at most 40 points, and 14B
+outranks 32B (BT 969.4 vs.\ 942.6), reversing the English and Spanish order.
+French is therefore the language where guided generation shows the smallest
+absolute BT advantage and where the cross-lingual curriculum produces the
+most distinct fine-tuned ranking.
+
+\begin{table}[h]
+  \caption{French pairwise ablation results (complements Figure~\ref{fig:bt-fr}).
+    Kimi-CSF leads but with the smallest BT margin over second place (124);
+    HumorGen-JOKER-14B ranks above 32B, the only language where the smaller
+    fine-tuned model places higher. See Table~\ref{tab:en} for column definitions.}
+  \label{tab:fr}
+  \small
+  \begin{tabular}{rlrcrrc}
+    \toprule
+    Rank & System & BT Score & Confidence Interval & Wins & Losses & Win Rate (\%) \\
+    \midrule
+    1 & Kimi-CSF            & 1105.9 & [1077, 1129] & 324 & 144 & 69.2 \\
+    2 & Kimi-Plain          &  982.1 & [960, 1007] & 219 & 249 & 46.8 \\
+    3 & HumorGen-JOKER-14B  &  969.4 & [946, 986] & 208 & 260 & 44.4 \\
+    4 & HumorGen-JOKER-32B  &  942.6 & [920, 966] & 185 & 283 & 39.5 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Head-to-head win rates corroborate the BT ordering
+(Figure~\ref{fig:heatmap-fr}): Kimi-CSF wins 61.5\% (96--60) against
+Kimi-Plain, 74.4\% (116--40) against HumorGen-JOKER-32B, and 71.8\%
+(112--44) against HumorGen-JOKER-14B.
+
+
+
+\subsection{Spanish Track Results}
+\label{sec:es}
+
+Figure~\ref{fig:bt-es} and Table~\ref{tab:es} summarize Spanish results.
+Kimi-CSF leads with BT~1138.5, 147 points above Kimi-Plain.
+The ranking largely mirrors English: 32B outranks 14B (BT 954.1 vs.\ 915.4),
+and the non-CSF systems again form a mid-tier cluster.
+Notably, this holds despite Spanish having the smallest fine-tuning corpus
+(3,101 rows): cross-lingual pretraining enables competitive performance from
+the student models, yet BT ratings remain 184--223 points below Kimi-CSF,
+falling short of closing the test-time guidance gap.
+
+\begin{table}[h]
+  \caption{Spanish pairwise ablation results (complements Figure~\ref{fig:bt-es}).
+    Kimi-CSF leads by 147 BT points; 32B outranks 14B as in English.
+    Fine-tuned systems trail Kimi-CSF by 184--223 BT points despite the
+    thinnest per-language training split. See Table~\ref{tab:en} for column definitions.}
+  \label{tab:es}
+  \small
+  \begin{tabular}{rlrcrrc}
+    \toprule
+    Rank & System & BT Score & Confidence Interval & Wins & Losses & Win Rate (\%) \\
+    \midrule
+    1 & Kimi-CSF            & 1138.5 & [1112, 1167] & 336 & 117 & 74.2 \\
+    2 & Kimi-Plain          &  992.0 & [967, 1016] & 221 & 232 & 48.8 \\
+    3 & HumorGen-JOKER-32B  &  954.1 & [926, 985] & 190 & 263 & 41.9 \\
+    4 & HumorGen-JOKER-14B  &  915.4 & [887, 947] & 159 & 294 & 35.1 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Head-to-head win rates corroborate the BT ordering
+(Figure~\ref{fig:heatmap-es}): Kimi-CSF wins 66.2\% (100--51) against
+Kimi-Plain, 76.8\% (116--35) against HumorGen-JOKER-32B, and 79.5\%
+(120--31) against HumorGen-JOKER-14B.
+
+
+
+\subsection{Multilingual Synthesis}
+\label{sec:summary}
+
+Table~\ref{tab:summary} consolidates BT ratings and marginal win rates across
+all three languages; Figure~\ref{fig:heatmaps} shows the corresponding
+head-to-head win-rate structure.
+Read together with Figure~\ref{fig:bt-leaderboards}, the multilingual picture
+is consistent but not uniform: Kimi-CSF dominates every BT leaderboard, yet
+competitor compression in French and the 32B/14B rank flip show that
+transfer of guided creativity and of distillation both depend on the target
+language.
+
+\begin{table}[t]
+  \caption{Cross-language BT ratings and overall win rates.
+    JOKER-32B and JOKER-14B refer to HumorGen-JOKER-32B and HumorGen-JOKER-14B
+    respectively (abbreviated for space).
+    Kimi-CSF leads all columns; note the FR compression (second-place BT within
+    124 of CSF vs.\ 227 in EN) and the 32B/14B rank swap (14B $>$ 32B in FR
+    only). Bold = best per column.}
+  \label{tab:summary}
+  \small
+  \setlength{\tabcolsep}{4.5pt}
+  \begin{tabular}{lcccccc}
+    \toprule
+    & \multicolumn{3}{c}{BT rating} & \multicolumn{3}{c}{Win Rate (\%)} \\
+    \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+    System            & EN & FR & ES & EN & FR & ES \\
+    \midrule
+    Kimi-CSF          & \textbf{1186.7} & \textbf{1105.9} & \textbf{1138.5}
+                      & \textbf{80.7}   & \textbf{69.2}   & \textbf{74.2}   \\
+    Kimi-Plain        & 959.6  & 982.1  & 992.0  & 43.6 & 46.8 & 48.8 \\
+    JOKER-32B         & 945.6  & 942.6  & 954.1  & 41.1 & 39.5 & 41.9 \\
+    JOKER-14B         & 908.1  & 969.4  & 915.4  & 34.6 & 44.4 & 35.1 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Pairwise Win-Rate Analysis}
+\label{sec:heatmaps}
+
+To better understand the performance gaps across models, we perform a direct analysis of all head-to-head matchups. Figure~\ref{fig:heatmaps} visualizes these pairwise win rates across the three language tracks, highlighting exactly which matchups drive the overall Bradley--Terry rankings.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/heatmap_en.png}
+    \caption{English. Kimi-CSF wins $\geq$78\% against every opponent;
+      the three baselines split matchups near evenly among themselves
+      (43--57\%), matching the tight BT cluster in
+      Figure~\ref{fig:bt-en}.}
+    \label{fig:heatmap-en}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/heatmap_fr.png}
+    \caption{French. Kimi-CSF's advantage vs.\ Kimi-Plain drops to 61.5\%;
+      HumorGen-JOKER-14B beats 32B head-to-head (58.3\%), consistent with
+      the BT rank reversal in Figure~\ref{fig:bt-fr}.}
+    \label{fig:heatmap-fr}
+  \end{subfigure}\hfill
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{images/heatmap_es.png}
+    \caption{Spanish. Pattern resembles English: Kimi-CSF dominates all pairs;
+      32B beats 14B (59.6\%) while both remain well below Kimi-CSF in BT
+      (Figure~\ref{fig:bt-es}).}
+    \label{fig:heatmap-es}
+  \end{subfigure}
+  \caption{Head-to-head win-rate heatmaps by language (four-system ablation).
+    Cell $(i,j)$: percentage of test briefs where row system $i$ is judged
+    funnier than column system $j$ (Llama 3.3 70B).
+    Heatmaps complement the BT leaderboards
+    (Figure~\ref{fig:bt-leaderboards}): they expose \emph{which} pairwise
+    comparisons drive the multilingual ranking shifts, especially the tighter
+    French competitor field and the 14B/32B inversion.}
+  \label{fig:heatmaps}
+\end{figure}
+
+\subsection{Key Experimental Findings}
+\label{sec:analysis}
+
+\paragraph{Guided creativity is the dominant factor:}
+Figure~\ref{fig:bt-leaderboards} shows Kimi-CSF leading every language track
+by BT rating.
+The performance gap between Kimi-CSF and Kimi-Plain, both using Kimi K2.6, is the
+cleanest controlled comparison: BT separation ranges from 124 points (FR) to
+227 (EN), while head-to-head win rates range from 61.5\% to 80.7\%.
+Since the backbone, constraint filtering, and test instances are identical,
+this gap is attributable entirely to CSF persona diversity and pairwise candidate
+selection.
+The result confirms that guided creativity transfers from open-ended English
+headline humor~\cite{ajayi2026humorgen} to constrained cross-lingual pun-brief
+generation.
+
+\paragraph{Distillation nearly matches the teacher backbone at plain generation,
+but cannot replicate guided search:}
+The fine-tuned students were trained on CSF-curated, pairwise-ranked data and
+therefore received the pipeline's guidance at training time.
+Critically, the student models (Qwen3-14B/32B) trail Kimi-Plain (the same
+Kimi K2.6 backbone with no guidance) by only 15--75 BT points across most
+language-system pairs, demonstrating that the SFT objective successfully
+encodes backbone-level joke generation competence into substantially smaller
+open-weight models.
+Nevertheless, neither HumorGen-JOKER-32B nor 14B closes the gap to Kimi-CSF in
+any language (BT deficit: 147--241 points), and they do not consistently
+outperform Kimi-Plain, which received no task-specific training.
+This suggests that distillation transfers the structural form of
+pun-brief generation (parsing the brief, activating both senses) but not the
+test-time search breadth that CSF with pairwise ranking achieves through
+multi-candidate evaluation.
+
+%=============================================================================
+\section{Limitations}
+\label{sec:limitations}
+%=============================================================================
+We note the following three limitations of this study:
+\begin{itemize}
+    \item \textbf{Automated Evaluation}: Our pairwise evaluation was conducted automatically. We did not conduct a secondary large-scale human evaluation to corroborate the automated rankings.
+    \item \textbf{Text-Only Modality}: Our humor generation framework and the JOKER task itself are strictly text-based. This does not capture multimodal elements, such as visual or auditory cues, which are often integral to real-world humor.
+    \item \textbf{Language Scope}: Our experiments are restricted to English, French, and Spanish. Extending the pipeline to a broader, more linguistically diverse set of languages remains an area for future work.
+\end{itemize}
+
+%=============================================================================
+\section{Conclusions}
+\label{sec:conclusions}
+%=============================================================================
+
+We submitted all four systems to the JOKER Lab Arena in English, French, and
+Spanish (Table~\ref{tab:submissions}), ablating where CSF enters the pipeline:
+test time (Kimi-CSF), training curation only (HumorGen-JOKER), or not at all
+(Kimi-Plain).
+Stage~1 fine-tuning follows HumorGen-SFT on MWAHAHA train headlines; subsequent
+JOKER stages apply an asymmetric cross-lingual LoRA curriculum.
+
+Interim internal evaluation (Figure~\ref{fig:bt-leaderboards}) ranks Kimi-CSF
+first in all three languages, with distilled student models trailing Kimi-Plain
+by a modest margin, indicating that the SFT curriculum transfers
+generation-level competence into open-weight parameters.
+The decisive performance gap lies between CSF-guided and unguided systems,
+not between backbone models.
+Official Arena scores (Table~\ref{tab:arena}) will situate all four variants
+against the full participant pool; we anticipate these results will further
+validate the contribution of guided generation under the competitive multilingual
+evaluation.
+
+%=============================================================================
+\section*{Acknowledgments}
+We would like to thank the CLEF 2026 JOKER Track organizers for orchestrating this task and for providing the evaluation framework.
+
+This publication was developed as part of the Center for Inclusive Digital Transformation of Africa (CIDTA), and, the Afretec Network which is managed by Carnegie Mellon University Africa and receives financial support from the Mastercard Foundation. The views expressed in this document are solely those of authors and do not necessarily reflect those of the Carnegie Mellon University or the Mastercard Foundation.
+
+\section*{Declaration on Generative AI}
+During the preparation of this work, the authors used \emph{Gemini 3.0} in order to: \textbf{Grammar and spelling check}. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the publication's content.
+
+\bibliography{joker2026}
+
+%=============================================================================
+\appendix
+\section{System and training details}
+\label{sec:app-details}
+
+\subsection{Model and Judge Configuration}
+\label{sec:app-models}
+
+We employ \textbf{Kimi K2.6} (MoonshotAI) as the core generation backbone for both Kimi-CSF and Kimi-Plain.
+Our distilled open-weight student models, HumorGen-JOKER-32B and HumorGen-JOKER-14B, are initialized from the \textbf{Qwen3-32B} and \textbf{Qwen3-14B} base models respectively. Both students are fine-tuned using QLoRA via the Unsloth library in 4-bit precision.
+Finally, we utilize \textbf{Llama 3.3 70B Instruct} as the pairwise judge. This model was accessed via the Groq API for the final post-submission ablation, and run locally on NVIDIA H100 80 GB GPUs for candidate ranking during training data curation.
+
+\subsection{Fine-Tuning Hyperparameters}
+\label{sec:app-hyperparams}
+
+All LoRA fine-tuning stages share the following configuration: bf16 precision, linear learning-rate decay, a gradient accumulation factor of 4 (with a per-device batch size of 4, yielding an effective batch size of 16), and evaluation every 50 gradient steps. Early stopping patience was set to 2 for Stage~2 and 1 for Stage~3. Additionally, thinking mode was explicitly disabled at inference time to evaluate pure plain generation.
+All fine-tuning and local inference experiments were conducted on NVIDIA H100 80 GB GPUs (allocating one GPU per job).
+The resulting adapter checkpoints are highly lightweight, requiring approximately 500 MB for the 32B models and 250 MB for the 14B models.
+
+Table~\ref{tab:sft-data} summarizes the training convergence, reporting the lowest evaluation loss achieved on a 5\% held-out validation split for each stage.
+Stage~1 follows the methodology of \cite{ajayi2026humorgen} on the SemEval-2026 MWAHAHA train headlines (CSF generation + pairwise ranking, yielding ${\approx}$12k examples). Stages~2a and 2b use the JOKER CSF datasets detailed earlier in Table~\ref{tab:sft-data}.
+
+\begin{table}[h]
+  \small
+  \centering
+  \begin{tabular}{llrrrr}
+    \toprule
+    Stage & Model & Data & Epochs & Best eval $\downarrow$ & $\Delta$ \\
+    \midrule
+    1  & 14B & 12k headlines  & 1.26 & 1.964 & \multicolumn{1}{c}{--} \\
+    1  & 32B & 12k headlines  & 1.26 & 1.890 & \multicolumn{1}{c}{--} \\
+    2a & 14B & 3,985 EN rows  & 2.0  & 1.846 & $-0.118$ \\
+    2a & 32B & 3,985 EN rows  & 2.0  & 1.789 & $-0.101$ \\
+    2b & 14B & 11,038 multi   & 1.14 & 1.696 & $-0.180$ \\
+    2b & 32B & 11,038 multi   & 1.14 & 1.622 & $-0.168$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Training convergence summary. $\Delta$ is change from Stage~1 init.}
+\end{table}
+
+\subsection{Pun-Brief Prompt Template}
+\label{sec:app-prompts}
+
+All systems use the following base pun-brief instruction at both training and
+test time:
+
+\begin{figure}[h]
+  \centering
+  \ttfamily
+  \begin{tabular}{l}
+    Write a humorous text for this pun brief. \\
+    \\
+    Language: \{language\} \\
+    Pun word: \{pun\_word\} \\
+    Sense A: \{sense\_a\} \\
+    Sense B: \{sense\_b\} \\
+    Keywords: \{keywords\} \quad [omitted when absent]
+  \end{tabular}
+  \caption{\normalfont Pun-brief instruction template.}
+\end{figure}
+
+\subsection{Cognitive Synergy Personas}
+\label{sec:app-personas}
+
+For Kimi-CSF, we adopt the six cognitive synergy personas exactly as defined in \cite{ajayi2025humorgen}. This ensemble maximizes the diversity of the generated candidates:
+\begin{enumerate}
+    \item \textbf{The Observer} (Style: Jerry Seinfeld) -- Finds the mundane absurdity using ``The Relatable Truth.''
+    \item \textbf{The Wordsmith} -- Master of wordplay, focusing on double meanings and linguistic twists.
+    \item \textbf{The Optimist} (Style: Ted Lasso) -- Employs joyful misdirection and wholesome enthusiasm.
+    \item \textbf{The Absurdist} -- Breaks causal expectations using surreal leaps of logic.
+    \item \textbf{The Cynic} -- Applies ironic social critique with deadpan delivery.
+    \item \textbf{The Neurotic} (Style: Larry David) -- Focuses on petty grievances and hyper-fixation.
+\end{enumerate}
+
+Each persona prepends a system prompt that encodes its specific humor mechanism and requires a \texttt{<THOUGHT>} / \texttt{<JOKE>} structured output format.
+
+\subsection{Constraint Verification Prompt}
+\label{sec:app-verifier}
+
+To ensure candidates adhere to the JOKER task parameters before entering the pairwise ranking tournament, Kimi-CSF filters candidates using an LLM-as-a-judge (Llama 3.3 70B Instruct). The judge evaluates five strict constraints (R1--R5) and outputs a JSON boolean dictionary:
+
+\begin{figure}[h]
+  \centering
+  \ttfamily
+  \begin{tabular}{l}
+    R1. Is the joke entirely in \{language\}? \\
+    R2. Is "\{pun\_word\}" (or a clear inflection) present in the joke? \\
+    R3. \{sense\_verification\_check\} \\
+    R4. Does the joke NOT start with meta-commentary ("Here is a joke", etc.)? \\
+    R5. Is the joke short, punchy, and non-empty (not a wall of text)? \\
+    \\
+    Return JSON exactly: \\
+    \{"R1":true/false, "R2":true/false, "R3":true/false, "R4":true/false, \\
+      "R5":true/false, "all\_pass":true/false, "fail\_reason":"..."\}
+  \end{tabular}
+  \caption{\normalfont LLM-as-a-judge verification prompt (R1--R5 constraints).}
+  \label{fig:prompt-verifier}
+\end{figure}
+
+\end{document}
