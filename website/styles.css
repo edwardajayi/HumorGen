@@ -383,7 +383,7 @@ strong { font-weight: 600; color: var(--text); }
 .split-card .vs { align-self: center; font-family: var(--font-display); color: var(--text-faint); font-size: .8rem; letter-spacing: .15em; }
 
 /* three-up theory row */
-.theory { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.6rem; margin-top: 3.5rem; }
+.theory { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.6rem; margin-top: 0; }
 .theory-card { padding: 1.5rem 1.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-2); }
 .theory-card h4 { font-family: var(--font-display); font-size: 1.05rem; margin-bottom: .4rem; color: var(--text); }
 .theory-card .th-tag { font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--clay); display: block; margin-bottom: .5rem; }
@@ -391,7 +391,7 @@ strong { font-weight: 600; color: var(--text); }
 .theory-note { max-width: 760px; color: var(--text-dim); font-size: .95rem; margin-top: 2rem; line-height: 1.7; }
 
 /* DPO vs O-GRPO compare */
-.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-top: 3.5rem; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; margin-top: 0; }
 .compare-col { padding: 1.8rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); }
 .compare-col h3 { font-size: 1.15rem; margin-bottom: .3rem; }
 .compare-col .cm-sub { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--clay); margin-bottom: 1rem; }
@@ -401,7 +401,7 @@ strong { font-weight: 600; color: var(--text); }
 @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
 
 /* pun-brief example */
-.ex-box { margin-top: 2.6rem; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; background: var(--surface); }
+.ex-box { margin-top: 0; border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; background: var(--surface); }
 .ex-head { padding: 1rem 1.4rem; border-bottom: 1px solid var(--border); background: var(--surface-2); font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
 .ex-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .ex-cell { padding: 1.3rem 1.4rem; border-right: 1px solid var(--border); }
@@ -414,6 +414,15 @@ strong { font-weight: 600; color: var(--text); }
 .ex-out .ev { color: var(--text); font-style: italic; font-size: 1.05rem; }
 
 .sub-note { max-width: 760px; color: var(--text-dim); font-size: .95rem; margin-top: 1.5rem; line-height: 1.7; }
+
+/* ---------- sub-headings (group labels within a section) ---------- */
+.subhead {
+  font-family: var(--font-display); font-size: 1.3rem; font-weight: 600;
+  margin: 2.6rem 0 1.1rem; color: var(--text);
+  display: flex; align-items: center; gap: .7rem;
+}
+.subhead::before { content: ''; width: 20px; height: 2px; background: var(--clay); border-radius: 2px; flex-shrink: 0; }
+.subhead .sh-count { margin-left: auto; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint); }
 
 
 /* ---------- model tables ---------- */

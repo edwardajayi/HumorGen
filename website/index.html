@@ -149,6 +149,7 @@
         punchline. An AI judge then runs a tournament across all the drafts to
         decide which ones are worth teaching to the student model.
       </p>
+      <h3 class="subhead" style="margin-top:0">Our cognitive personas <span class="sh-count">6 personalities</span></h3>
       <div class="grid cards personas">
         <article class="card reveal">
           <div class="card-icon">😟</div>
@@ -206,6 +207,7 @@
         </article>
       </div>
 
+      <h3 class="subhead">The humor theories behind them <span class="sh-count">4 theories</span></h3>
       <div class="theory reveal">
         <div class="theory-card">
           <span class="th-tag">Relief theory</span>
@@ -230,7 +232,8 @@
       </div>
       <p class="theory-note reveal">For each headline, every personality produces several joke drafts. No personality is hand-picked as the best — an AI judge compares all the drafts and lets the funniest ones earn their place in training.</p>
 
-      <div class="split reveal" style="margin-top:3.5rem;">
+      <h3 class="subhead">How the framework works <span class="sh-count">2 techniques</span></h3>
+      <div class="split reveal" style="margin-top:0;">
         <div class="split-card">
           <span class="sc-tag">Mixture-of-Thought</span>
           <h3>Many jokes, not one.</h3>
@@ -256,6 +259,7 @@
         <div class="step reveal"><span class="step-num">03</span><h3>Does fancy tuning help?</h3><p>We test two popular preference-tuning methods on top: <strong>DPO</strong> (direct preference learning) and <strong>O-GRPO</strong> (a group-relative variant). Neither beats the simpler approach — once the training jokes are well-chosen, the extra tuning adds little.</p></div>
       </div>
 
+      <h3 class="subhead">The alignment techniques we tested <span class="sh-count">2 methods</span></h3>
       <div class="compare reveal">
         <div class="compare-col">
           <span class="cm-sub">DPO</span>
@@ -290,7 +294,7 @@
       <div class="section-head reveal">
         <span class="kicker">Evaluation</span>
         <h2>How does it actually compare?</h2>
-        <p>We ranked our models against 13 others — including frontier systems from OpenAI, Google, and others — on two humor benchmarks. Each model's jokes are compared head-to-head by an AI judge, and the results are turned into a leaderboard. <strong>Higher scores mean the model's jokes were judged funnier, more often.</strong> Full tables are in the paper.</p>
+        <p>We ranked our models against 13 others — including frontier systems from OpenAI, Google, and others — on two humor benchmarks: the <a class="inline-link" href="https://huggingface.co/datasets/Jayi2424/HumorTransferBench" target="_blank" rel="noopener">Humor Transfer Bench</a> (our new 400-prompt set) and <a class="inline-link" href="https://www.codabench.org/competitions/9719/" target="_blank" rel="noopener">SemEval MWAHAHA</a> (the established headline benchmark). Each model's jokes are compared head-to-head by an AI judge, and the results are turned into a leaderboard. <strong>Higher scores mean the model's jokes were judged funnier, more often.</strong> Full tables are in the paper.</p>
       </div>
 
       <div class="bench-tabs reveal" role="tablist">
@@ -301,7 +305,7 @@
       <div class="bench-panel active reveal" id="bench-htb">
         <div class="bench-meta">
           <span>400 prompts across 8 different styles of input · 42,000 head-to-head comparisons</span>
-          <span class="bench-note">Tests whether a model can be funny beyond news headlines — no model trained on this set.</span>
+          <span class="bench-note">Tests whether a model can be funny beyond news headlines — no model trained on this set. <a class="inline-link" href="https://huggingface.co/datasets/Jayi2424/HumorTransferBench" target="_blank" rel="noopener">View dataset ↗</a></span>
         </div>
         <div class="table-wrap leaderboard">
           <table>
@@ -330,7 +334,7 @@
       <div class="bench-panel reveal" id="bench-semeval" hidden>
         <div class="bench-meta">
           <span>50 news headlines · 5,250 head-to-head comparisons</span>
-          <span class="bench-note">The established benchmark for humor generation from headlines.</span>
+          <span class="bench-note">The established benchmark for humor generation from headlines. <a class="inline-link" href="https://www.codabench.org/competitions/9719/" target="_blank" rel="noopener">View competition ↗</a></span>
         </div>
         <div class="table-wrap leaderboard">
           <table>
@@ -364,8 +368,9 @@
       <div class="section-head reveal">
         <span class="kicker">CLEF 2026 JOKER · Task 4</span>
         <h2>Extending to constrained humor.</h2>
-        <p>The framework isn't limited to open-ended jokes. JOKER Task 4 is stricter: you're given a pun word and two meanings it has to carry, and you must write a short funny line that hits both senses at once. The model has to satisfy a hard constraint without losing the laugh.</p>
+        <p>The framework isn't limited to open-ended jokes. <a class="inline-link" href="https://www.codabench.org/competitions/13879/" target="_blank" rel="noopener">JOKER Task 4</a> is stricter: you're given a pun word and two meanings it has to carry, and you must write a short funny line that hits both senses at once. The model has to satisfy a hard constraint without losing the laugh.</p>
       </div>
+      <h3 class="subhead" style="margin-top:0">The four-stage curriculum <span class="sh-count">4 stages</span></h3>
       <div class="joker-grid">
         <div class="joker-card reveal">
           <h3>Stage 1 — Humor prior</h3>
@@ -385,6 +390,7 @@
         </div>
       </div>
 
+      <h3 class="subhead">A pun-brief, in action</h3>
       <div class="ex-box reveal">
         <div class="ex-head">Task 4 pun brief — example from the JOKER test set (English, het_1261)</div>
         <div class="ex-body">
@@ -529,13 +535,13 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       </div>
       <div class="grid papers">
         <article class="paper reveal">
-          <span class="paper-venue">arXiv 2026</span>
+          <span class="paper-venue">HumorGen Paper</span>
           <h3>HumorGen: Cognitive Synergy for Humor Generation in Large Language Models via Persona-Based Distillation</h3>
           <p class="paper-auth">Ajayi, E. &amp; Mitra, P.</p>
           <a class="btn btn-ghost btn-sm" href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">View PDF ↗</a>
         </article>
         <article class="paper reveal">
-          <span class="paper-venue">CLEF 2026 · Working Notes</span>
+          <span class="paper-venue">HumorGen-JOKER Paper</span>
           <h3>Cross-Lingual Cognitive Synergy for Constrained Humor Generation in LLMs</h3>
           <p class="paper-auth">Ajayi, E. &amp; Mitra, P. · CLEF 2026 JOKER Track</p>
           <a class="btn btn-ghost btn-sm" href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">View PDF ↗</a>
@@ -551,7 +557,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       </div>
       <div class="cite reveal">
         <div class="cite-block">
-          <div class="cite-head"><span>arXiv</span><button class="copy-btn" data-target="citeArxiv">copy</button></div>
+          <div class="cite-head"><span>HumorGen Paper</span><button class="copy-btn" data-target="citeArxiv">copy</button></div>
           <pre id="citeArxiv"><code>@misc{ajayi2026humorgen,
   title         = {HumorGen: Cognitive Synergy for Humor Generation in Large Language
                    Models via Persona-Based Distillation},
@@ -564,7 +570,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
 }</code></pre>
         </div>
         <div class="cite-block">
-          <div class="cite-head"><span>CLEF 2026</span><button class="copy-btn" data-target="citeClef">copy</button></div>
+          <div class="cite-head"><span>HumorGen-JOKER Paper</span><button class="copy-btn" data-target="citeClef">copy</button></div>
           <pre id="citeClef"><code>@inproceedings{ajayi2026joker,
   title     = {Cross-Lingual Cognitive Synergy for Constrained Humor Generation
                in LLMs: SaLT Lab at the CLEF 2026 JOKER Track},
@@ -591,6 +597,9 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))</code></pre>
       <div class="foot-col">
         <h4>Resources</h4>
         <a href="https://huggingface.co/collections/Jayi2424/humorgen" target="_blank" rel="noopener">Hugging Face</a>
+        <a href="https://huggingface.co/datasets/Jayi2424/HumorTransferBench" target="_blank" rel="noopener">HTB dataset</a>
+        <a href="https://www.codabench.org/competitions/9719/" target="_blank" rel="noopener">SemEval MWAHAHA</a>
+        <a href="https://www.codabench.org/competitions/13879/" target="_blank" rel="noopener">JOKER Task 4</a>
         <a href="https://arxiv.org/abs/2604.09629" target="_blank" rel="noopener">arXiv paper</a>
         <a href="https://edwardajayi.github.io/assets/papers/HumorGen-JOKER.pdf" target="_blank" rel="noopener">CLEF paper</a>
       </div>
