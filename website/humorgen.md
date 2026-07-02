@@ -120,9 +120,9 @@ The CSF generalizes to constrained pun generation. **CLEF 2026 JOKER Task 4** pr
 
 ---
 
-## Model Collection
+## Model collections
 
-14 open-weight models as **PEFT LoRA adapters**. Collection: [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen). Apache-2.0.
+14 open-weight LoRA adapters on Hugging Face. Collection: [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen). Apache-2.0.
 
 ### Core HumorGen — 7B (6 models)
 

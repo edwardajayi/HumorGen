@@ -16,11 +16,20 @@
 </p>
 
 <p align="center">
-  <a href="https://humorgen.pages.dev"><b>→ Visit the project website</b></a>
+  <a href="https://humorgen.pages.dev">
+    <img src="https://cdn.simpleicons.org/googlechrome/14b8a6" alt="" width="14" height="14" style="vertical-align: -2px">
+    Visit the project website
+  </a>
   &nbsp;·&nbsp;
-  <a href="https://arxiv.org/abs/2604.09629">Read the HumorGen paper</a>
+  <a href="https://arxiv.org/abs/2604.09629">
+    <img src="https://cdn.simpleicons.org/arxiv/b31b1b" alt="" width="14" height="14" style="vertical-align: -2px">
+    Read the HumorGen paper
+  </a>
   &nbsp;·&nbsp;
-  <a href="https://huggingface.co/datasets/Jayi2424/HumorTransferBench">HTB benchmark</a>
+  <a href="https://huggingface.co/datasets/Jayi2424/HumorTransferBench">
+    <img src="https://cdn.simpleicons.org/huggingface/ffd21e" alt="" width="14" height="14" style="vertical-align: -2px">
+    HTB benchmark
+  </a>
 </p>
 
 ---
@@ -41,7 +50,7 @@ The full project — framework, leaderboards, models, usage, and papers — is l
 |:---|:---|
 | **Framework** | Six comedic personas + humor theories |
 | **Results** | HTB & SemEval leaderboards |
-| **Models** | All 14 adapters with Hugging Face links |
+| **Model collections** | All 14 LoRA adapters on Hugging Face |
 | **Usage** | Copy-paste inference snippets |
 | **Papers** | HumorGen + JOKER PDFs & citations |
 
@@ -64,9 +73,9 @@ The full project — framework, leaderboards, models, usage, and papers — is l
 
 ---
 
-## Models
+## Model collections
 
-**14 open-weight LoRA adapters** on Hugging Face · [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen)
+**14 open-weight LoRA adapters on Hugging Face** · [Jayi2424/HumorGen](https://huggingface.co/collections/Jayi2424/humorgen)
 
 | Family | Scale | What it does |
 |:---|:---|:---|
