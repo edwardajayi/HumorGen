@@ -34,7 +34,7 @@
 
 ---
 
-HumorGen teaches language models to be genuinely funny — not just to produce text that sounds like a joke. Instead of asking one model to be funny, the **Cognitive Synergy Framework** runs six comedic personalities in parallel, ranks the drafts with an AI judge, and distills the winners into efficient student models.
+HumorGen teaches language models to be genuinely funny — not just to produce text that sounds like a joke. Instead of forcing a model to figure out comedy on its own, it introduces the **Cognitive Synergy Framework**. By running six distinct creative comedic personas in parallel to explore diverse creative paths, the framework generates high-quality candidate jokes, which are then used through training in distilling true humor generation abilities into smaller, efficient models.
 
 > **Key finding:** Good training data beats model scale. Our student models rank among the strongest open humor models, beating systems many times their size — and adding preference tuning on top brings little extra gain once the data is well-chosen.
 
